@@ -1,18 +1,15 @@
-// // ignore: import_of_legacy_library_into_null_safe
-// import 'package:dependencies/dependencies.dart';
-// import 'package:estudo_inject/view/auth/auth_view.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:secure_note/view/auth/auth_view.dart';
 
-// class AuthModule implements Module {
-//   @override
-//   void configure(Binder binder) {
-//     binder
-//         // ..bindFactory<IInformationsViewBloc>(
-//         //     (injector, params) => InformationsViewBloc(
-//         //           injector.get(),
-//         //           injector.get(),
-//         //           injector.get(),
-//         //           injector.get(),
-//         //         ))
-//         .bindFactory((injector, params) => const AuthView());
-//   }
-// }
+class AuthModule extends Module {
+  @override
+  List<Bind> get binds => [
+        // Bind.singleton<IAuthBloc>((i) => AuthBloc()),
+        Bind.singleton((i) => const AuthView()),
+      ];
+  @override
+  List<ModularRoute> get routes => [
+        ChildRoute(Modular.initialRoute,
+            child: (_, args) => Modular.get<AuthView>()),
+      ];
+}

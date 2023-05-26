@@ -22,6 +22,6 @@ class SplashBloc extends BlocBase with ISplashBloc {
 
   @override
   void navigatoHome() {
-    Modular.to.navigate(AppRoutes.home);
+    Modular.to.navigate(AppRoutes.auth);
   }
 }

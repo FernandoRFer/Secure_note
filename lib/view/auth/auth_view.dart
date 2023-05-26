@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:local_auth/local_auth.dart';
+import 'dart:async';
+
+import 'package:secure_note/routes.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({Key? key}) : super(key: key);
@@ -74,6 +78,10 @@ class _AuthViewState extends State<AuthView> {
           stickyAuth: true,
         ),
       );
+      if (authenticated) {
+        Modular.to.pushNamed(AppRoutes.home);
+      }
+
       setState(() {
         _isAuthenticating = false;
       });
@@ -108,6 +116,7 @@ class _AuthViewState extends State<AuthView> {
           biometricOnly: true,
         ),
       );
+
       setState(() {
         _isAuthenticating = false;
         _authorized = 'Authenticating';
@@ -137,83 +146,81 @@ class _AuthViewState extends State<AuthView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: ListView(
-          padding: const EdgeInsets.only(top: 30),
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                if (_supportState == _SupportState.unknown)
-                  const CircularProgressIndicator()
-                else if (_supportState == _SupportState.supported)
-                  const Text('This device is supported')
-                else
-                  const Text('This device is not supported'),
-                const Divider(height: 100),
-                Text('Can check biometrics: $_canCheckBiometrics\n'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Plugin example app'),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.only(top: 30),
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              if (_supportState == _SupportState.unknown)
+                const CircularProgressIndicator()
+              else if (_supportState == _SupportState.supported)
+                const Text('This device is supported')
+              else
+                const Text('This device is not supported'),
+              const Divider(height: 100),
+              Text('Can check biometrics: $_canCheckBiometrics\n'),
+              ElevatedButton(
+                onPressed: _checkBiometrics,
+                child: const Text('Check biometrics'),
+              ),
+              const Divider(height: 100),
+              Text('Available biometrics: $_availableBiometrics\n'),
+              ElevatedButton(
+                onPressed: _getAvailableBiometrics,
+                child: const Text('Get available biometrics'),
+              ),
+              const Divider(height: 100),
+              Text('Current State: $_authorized\n'),
+              if (_isAuthenticating)
                 ElevatedButton(
-                  onPressed: _checkBiometrics,
-                  child: const Text('Check biometrics'),
-                ),
-                const Divider(height: 100),
-                Text('Available biometrics: $_availableBiometrics\n'),
-                ElevatedButton(
-                  onPressed: _getAvailableBiometrics,
-                  child: const Text('Get available biometrics'),
-                ),
-                const Divider(height: 100),
-                Text('Current State: $_authorized\n'),
-                if (_isAuthenticating)
-                  ElevatedButton(
-                    onPressed: _cancelAuthentication,
-                    // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
-                    // ignore: prefer_const_constructors
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const <Widget>[
-                        Text('Cancel Authentication'),
-                        Icon(Icons.cancel),
-                      ],
-                    ),
-                  )
-                else
-                  Column(
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: _authenticate,
-                        // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
-                        // ignore: prefer_const_constructors
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: const <Widget>[
-                            Text('Authenticate'),
-                            Icon(Icons.perm_device_information),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: _authenticateWithBiometrics,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(_isAuthenticating
-                                ? 'Cancel'
-                                : 'Authenticate: biometrics only'),
-                            const Icon(Icons.fingerprint),
-                          ],
-                        ),
-                      ),
+                  onPressed: _cancelAuthentication,
+                  // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
+                  // ignore: prefer_const_constructors
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const <Widget>[
+                      Text('Cancel Authentication'),
+                      Icon(Icons.cancel),
                     ],
                   ),
-              ],
-            ),
-          ],
-        ),
+                )
+              else
+                Column(
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _authenticate,
+                      // TODO(goderbauer): Make this const when this package requires Flutter 3.8 or later.
+                      // ignore: prefer_const_constructors
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const <Widget>[
+                          Text('Authenticate'),
+                          Icon(Icons.perm_device_information),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: _authenticateWithBiometrics,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(_isAuthenticating
+                              ? 'Cancel'
+                              : 'Authenticate: biometrics only'),
+                          const Icon(Icons.fingerprint),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }
