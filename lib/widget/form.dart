@@ -81,3 +81,67 @@ class _AppFormState extends State<AppForm> {
     });
   }
 }
+
+class AppFormText extends StatefulWidget {
+  final Color? textColor;
+  final Color? borderSideColor;
+  final String labelText;
+  final Color? labelStyleColor;
+  final Color? focusedBorderColor;
+  final bool isPassword;
+  final IconData? icon;
+  final String? Function(String?)? validador;
+  final void Function(String?)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+
+  const AppFormText({
+    this.borderSideColor,
+    this.textColor,
+    this.labelText = " ",
+    this.labelStyleColor,
+    this.focusedBorderColor,
+    this.isPassword = false,
+    this.icon,
+    this.validador,
+    this.onChanged,
+    this.inputFormatters,
+    this.controller,
+    this.keyboardType,
+    super.key,
+  });
+
+  @override
+  State<AppFormText> createState() => _AppFormTexteState();
+}
+
+class _AppFormTexteState extends State<AppFormText> {
+  bool senhaVisivel = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+        maxLines: null,
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        onChanged: widget.onChanged ?? (value) {},
+        obscureText: senhaVisivel,
+        validator: widget.validador,
+        inputFormatters: widget.inputFormatters,
+        style: TextStyle(color: widget.textColor),
+        decoration: InputDecoration(
+            enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(
+                  //  color: Color.fromARGB(0, 0, 0, 0),
+                  ),
+            ),
+            labelText: widget.labelText,
+            labelStyle: TextStyle(color: widget.labelStyleColor),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            focusedBorder: const OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: Color.fromARGB(0, 0, 0, 0), width: 1.0),
+            )));
+  }
+}

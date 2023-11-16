@@ -2,24 +2,29 @@ import 'dart:developer';
 import 'package:sqflite/sqflite.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
+//import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../Model/product_model.dart';
+import '../Model/note_model.dart';
 
-class DbProdutos {
-  final String _tableName = "Docs";
-  final String _idUser = "IdUsuario";
-  final String _title = "Title";
-  final String _subtitle = "Password";
-  final String _description = "Description";
+abstract class IDbNotes {
+  Future<int> salvarDbProdutos(NoteModel produtoModel);
+  Future<List<NoteModel>> getProduct(int? id);
+}
 
-  static final DbProdutos _dbMusica = DbProdutos._();
+class DbNotes implements IDbNotes {
+  final String _tableName = "docs";
+  final String _idUser = "idusuario";
+  final String _title = "title";
+  final String _note = "note";
+
+  static final DbNotes _dbMusica = DbNotes._();
   Database? _db;
 
-  factory DbProdutos() {
+  factory DbNotes() {
     return _dbMusica;
   }
 
-  DbProdutos._();
+  DbNotes._();
 
   get db async {
     _db ??= await starDB();
@@ -28,7 +33,7 @@ class DbProdutos {
 
   _onCreate(Database db, int version) {
     String sql =
-        "CREATE TABLE $_tableName (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,$_idUser int ,$_title VARCHAR ,$_subtitle VARCHAR $_description VARCHAR)";
+        "CREATE TABLE $_tableName (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,$_idUser int ,$_title VARCHAR ,$_note VARCHAR)";
     db.execute(sql);
   }
 
@@ -42,7 +47,8 @@ class DbProdutos {
     return db;
   }
 
-  Future<int> salvarDbProdutos(ProductModel produtoModel) async {
+  @override
+  Future<int> salvarDbProdutos(NoteModel produtoModel) async {
     Database bancoDados = await db;
     var usuario = produtoModel.toJson();
 
@@ -50,15 +56,20 @@ class DbProdutos {
     return resultado;
   }
 
-  Future getProduct(int? id) async {
+  @override
+  Future<List<NoteModel>> getProduct(int? id) async {
     var bancoDados = await db;
-
-    String sql = "SELECT * FROM $_tableName WHERE IdUsuario = $id ";
+    String sql;
+    if (id != null) {
+      sql = "SELECT * FROM $_tableName WHERE IdUsuario = $id ";
+    } else {
+      sql = "SELECT * FROM $_tableName ";
+    }
 
     var itens = await bancoDados.rawQuery(sql);
-    List<ProductModel> listaTemporaria = [];
+    List<NoteModel> listaTemporaria = [];
     for (var item in itens) {
-      var lista = ProductModel.fromJson(item);
+      var lista = NoteModel.fromJson(item);
       listaTemporaria.add(lista);
     }
 
@@ -66,10 +77,10 @@ class DbProdutos {
     return listaTemporaria;
   }
 
-  Future<void> updateUser(ProductModel produtoModel) async {
+  Future<void> updateUser(NoteModel produtoModel) async {
     var bancoDados = await db;
     String sql =
-        "UPDATE $_tableName SET Produtos = '${produtoModel.produto}' , Descricao = '${produtoModel.descricao}'  WHERE id = ${produtoModel.id}";
+        "UPDATE $_tableName SET Produtos = '${produtoModel.title}' , Descricao = '${produtoModel.note}'  WHERE id = ${produtoModel.id}";
 
     var result = await bancoDados.rawQuery(sql);
     log(result);

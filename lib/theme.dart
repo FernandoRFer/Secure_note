@@ -131,19 +131,19 @@ Map<AppFontWeight, FontWeight> customFontWeight = {
 /// https://www.figma.com/file/7kABRZ3m9TyQfC2MMQru53/AtlasPOS?node-id=108%3A48&t=MIkSDvqEaWoU2kxa-0
 ///
 abstract class AppTheme {
-  // static const purple = Color(0xFF4d1476);
-  // static const lilac = Color(0xFFc29eff);
-  // static const red = Color(0xFFff0050);
-  // static const newRed = Color(0xFFdb2828);
-  // static const orange = Color(0xFFff6e00);
-  // static const yellow = Color(0xFFffe166);
-  // static const green = Color(0xFF22e57c);
-  // static const newGreen = Color(0xFF21BA45);
-  // static const teal = Color(0xFF07d6c5);
-  // static const blue = Color(0xFF92ecf7);
-  // static const grey = Color(0xFFd1dbe1);
-  // static const darkBlue = Color(0xFF091b94);
-  // static const newBlue = Color(0xFF2185d0);
+  static const purple = Color(0xFF4d1476);
+  static const lilac = Color(0xFFc29eff);
+  static const red = Color(0xFFff0050);
+  static const newRed = Color(0xFFdb2828);
+  static const orange = Color(0xFFff6e00);
+  static const yellow = Color(0xFFffe166);
+  static const green = Color(0xFF22e57c);
+  static const newGreen = Color(0xFF21BA45);
+  static const teal = Color(0xFF07d6c5);
+  static const blue = Color(0xFF92ecf7);
+  static const grey = Color(0xFFd1dbe1);
+  static const darkBlue = Color(0xFF091b94);
+  static const newBlue = Color(0xFF2185d0);
 
   // New 12/22
   static const primaryColor = PrimaryColor.mcgpalette0;
@@ -354,53 +354,53 @@ abstract class WhiteColor {
   static const int _blackPrimaryValue = 0xFFFFFFFF;
 }
 
-class AppText extends StatelessWidget {
-  final String data;
-  final AppFontSize fontSize;
-  final AppColor fontColor;
-  final AppFontWeight fontWeight;
-  final FontStyle fontStyle;
-  final TextAlign align;
-  final TextOverflow? overflow;
-  final int? maxLines;
+// class AppText extends StatelessWidget {
+//   final String data;
+//   final AppFontSize fontSize;
+//   final AppColor fontColor;
+//   final AppFontWeight fontWeight;
+//   final FontStyle fontStyle;
+//   final TextAlign align;
+//   final TextOverflow? overflow;
+//   final int? maxLines;
 
-  /// The [data] parameter must not be null.
-  const AppText(
-    this.data, {
-    this.fontStyle = FontStyle.normal,
-    this.fontSize = AppFontSize.normal,
-    this.fontColor = AppColor.white,
-    this.fontWeight = AppFontWeight.app,
-    this.align = TextAlign.left,
-    super.key,
-    this.overflow,
-    this.maxLines,
-  });
+//   /// The [data] parameter must not be null.
+//   const AppText(
+//     this.data, {
+//     this.fontStyle = FontStyle.normal,
+//     this.fontSize = AppFontSize.normal,
+//     this.fontColor = AppColor.white,
+//     this.fontWeight = AppFontWeight.app,
+//     this.align = TextAlign.left,
+//     super.key,
+//     this.overflow,
+//     this.maxLines,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      data,
-      style: fontWeight == AppFontWeight.app
-          ? appStyles[fontSize]!.copyWith(
-              fontStyle: fontStyle,
-              color: fontColor == AppColor.success
-                  ? appColors[fontColor]![900]
-                  : fontColor == AppColor.grey
-                      ? appColors[fontColor]![700]
-                      : appColors[fontColor],
-            )
-          : appStyles[fontSize]!.copyWith(
-              fontWeight: customFontWeight[fontWeight],
-              fontStyle: fontStyle,
-              color: appColors[fontColor],
-            ),
-      textAlign: align,
-      overflow: overflow,
-      maxLines: maxLines,
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Text(
+//       data,
+//       style: fontWeight == AppFontWeight.app
+//           ? appStyles[fontSize]!.copyWith(
+//               fontStyle: fontStyle,
+//               color: fontColor == AppColor.success
+//                   ? appColors[fontColor]![900]
+//                   : fontColor == AppColor.grey
+//                       ? appColors[fontColor]![700]
+//                       : appColors[fontColor],
+//             )
+//           : appStyles[fontSize]!.copyWith(
+//               fontWeight: customFontWeight[fontWeight],
+//               fontStyle: fontStyle,
+//               color: appColors[fontColor],
+//             ),
+//       textAlign: align,
+//       overflow: overflow,
+//       maxLines: maxLines,
+//     );
+//   }
+// }
 
 abstract class GreyColor {
   static const MaterialColor mcgpalette0 =
@@ -480,249 +480,232 @@ abstract class LinkBlueColor {
   static const int _mcgpalette0AccentValue = 0xFFF3F4FF;
 }
 
-class AppPrimaryButton extends StatelessWidget {
-  const AppPrimaryButton(
-    this.text, {
-    this.onPressed,
-    super.key,
-    this.color = kAppPrimaryButtonColor,
-    this.colorText,
-    this.decreaseOpacity,
-  });
-  final String text;
-  final AppColor color;
-  final AppColor? colorText;
-  final bool? decreaseOpacity;
+// class AppPrimaryButton extends StatelessWidget {
+//   const AppPrimaryButton(
+//     this.text, {
+//     this.onPressed,
+//     super.key,
+//     this.color = kAppPrimaryButtonColor,
+//     this.colorText,
+//     this.decreaseOpacity,
+//   });
+//   final String text;
+//   final AppColor color;
+//   final AppColor? colorText;
+//   final bool? decreaseOpacity;
 
-  final void Function()? onPressed;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: _buttonPadding,
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: kAppBorderRadius,
-            color: decreaseOpacity != null
-                ? appColors[color]![200]
-                : appColors[color],
-          ),
-          height: _buttonHeight,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
-            child: Center(
-                child: AppText(
-              text,
-              fontColor: colorText ?? _getButtonFontColor(color),
-              fontSize: _buttonTextSize,
-              // fontWeight: AppFontWeight.normal,
-            )),
-          ),
-        ),
-      ),
-    );
-  }
+//   final void Function()? onPressed;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: _buttonPadding,
+//       child: GestureDetector(
+//         onTap: onPressed,
+//         child: Container(
+//           decoration: BoxDecoration(
+//             borderRadius: kAppBorderRadius,
+//             color: decreaseOpacity != null
+//                 ? appColors[color]![200]
+//                 : appColors[color],
+//           ),
+//           height: _buttonHeight,
+//           child: Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
+//             child: Center(
+//                 child: AppText(
+//               text,
+//               fontColor: colorText ?? _getButtonFontColor(color),
+//               fontSize: _buttonTextSize,
+//               // fontWeight: AppFontWeight.normal,
+//             )),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
 
-  AppColor _getButtonFontColor(AppColor color) {
-    switch (color) {
-      case AppColor.primary:
-        return AppColor.black;
-      case AppColor.white:
-        return AppColor.black;
-      default:
-        return AppColor.white;
-    }
-  }
-}
+//   AppColor _getButtonFontColor(AppColor color) {
+//     switch (color) {
+//       case AppColor.primary:
+//         return AppColor.black;
+//       case AppColor.white:
+//         return AppColor.black;
+//       default:
+//         return AppColor.white;
+//     }
+//   }
+// }
 
-class AppOutlinedButton extends StatelessWidget {
-  const AppOutlinedButton(this.text,
-      {this.onPressed,
-      super.key,
-      this.color = kAppOutlinedButtonColor,
-      this.reduceSize = false,
-      this.icon});
-  final String text;
-  final AppColor color;
-  final void Function()? onPressed;
-  final bool reduceSize;
-  final IconData? icon;
+// class AppOutlinedButton extends StatelessWidget {
+//   const AppOutlinedButton(this.text,
+//       {this.onPressed,
+//       super.key,
+//       this.color = kAppOutlinedButtonColor,
+//       this.reduceSize = false,
+//       this.icon});
+//   final String text;
+//   final AppColor color;
+//   final void Function()? onPressed;
+//   final bool reduceSize;
+//   final IconData? icon;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: _buttonPadding,
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: appColors[color]!),
-            borderRadius: kAppBorderRadius,
-          ),
-          height: reduceSize ? _buttonHeightReduce : _buttonHeight,
-          child: icon == null
-              ? Padding(
-                  padding: reduceSize
-                      ? const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 8.0)
-                      : const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 8.0),
-                  child: Center(
-                      child: AppText(
-                    text,
-                    fontColor: _getButtonFontColor(color),
-                    fontSize:
-                        reduceSize ? _buttonTextSizeReduce : _buttonTextSize,
-                    // fontWeight: AppFontWeight.normal,
-                  )),
-                )
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      icon,
-                      color: AppTheme.blackColor,
-                    ),
-                    const SizedBox(width: 10),
-                    AppText(
-                      text,
-                      fontColor: AppColor.black,
-                      fontSize: AppFontSize.heading5,
-                    ),
-                  ],
-                ),
-        ),
-      ),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: _buttonPadding,
+//       child: GestureDetector(
+//         onTap: onPressed,
+//         child: Container(
+//           decoration: BoxDecoration(
+//             border: Border.all(),
+//             borderRadius: kAppBorderRadius,
+//           ),
+//           height: reduceSize ? _buttonHeightReduce : _buttonHeight,
+//           child: icon == null
+//               ? Padding(
+//                   padding:
+//                       const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
+//                   child: Center(
+//                       child: Text(
+//                     text,
+//                   )),
+//                 )
+//               : Row(
+//                   crossAxisAlignment: CrossAxisAlignment.center,
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Icon(
+//                       icon,
+//                     ),
+//                     const SizedBox(width: 10),
+//                     AppText(
+//                       text,
+//                       fontColor: AppColor.black,
+//                       fontSize: AppFontSize.heading5,
+//                     ),
+//                   ],
+//                 ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-  AppColor _getButtonFontColor(AppColor color) {
-    switch (color) {
-      case AppColor.grey:
-        return AppColor.black;
-      default:
-        return color;
-    }
-  }
-}
+// class AppOutlinedButtonLogin extends StatelessWidget {
+//   const AppOutlinedButtonLogin(
+//     this.text, {
+//     this.iconText,
+//     this.onPressed,
+//     super.key,
+//     this.color = AppColor.black,
+//     this.border = true,
+//   });
+//   final IconData? iconText;
+//   final String text;
+//   final AppColor color;
+//   final void Function()? onPressed;
+//   final bool border;
 
-class AppOutlinedButtonLogin extends StatelessWidget {
-  const AppOutlinedButtonLogin(
-    this.text, {
-    this.iconText,
-    this.onPressed,
-    super.key,
-    this.color = AppColor.black,
-    this.border = true,
-  });
-  final IconData? iconText;
-  final String text;
-  final AppColor color;
-  final void Function()? onPressed;
-  final bool border;
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: onPressed,
+//       child: Container(
+//         decoration: border
+//             ? BoxDecoration(
+//                 border: Border.all(color: appColors[color]!),
+//                 borderRadius: kAppBorderRadius,
+//               )
+//             : null,
+//         height: 49,
+//         child: Row(
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Icon(
+//               iconText,
+//               color: appColors[color],
+//             ),
+//             const SizedBox(width: 10),
+//             AppText(
+//               text,
+//               fontColor: color,
+//               fontSize: AppFontSize.heading5,
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        decoration: border
-            ? BoxDecoration(
-                border: Border.all(color: appColors[color]!),
-                borderRadius: kAppBorderRadius,
-              )
-            : null,
-        height: 49,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              iconText,
-              color: appColors[color],
-            ),
-            const SizedBox(width: 10),
-            AppText(
-              text,
-              fontColor: color,
-              fontSize: AppFontSize.heading5,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+//   AppColor _getButtonFontColor(AppColor color) {
+//     switch (color) {
+//       case AppColor.grey:
+//         return AppColor.black;
+//       default:
+//         return color;
+//     }
+//   }
+// }
 
-  AppColor _getButtonFontColor(AppColor color) {
-    switch (color) {
-      case AppColor.grey:
-        return AppColor.black;
-      default:
-        return color;
-    }
-  }
-}
+// class AppTextButton extends StatelessWidget {
+//   const AppTextButton(this.text, {this.onPressed, super.key});
+//   final String text;
+//   final void Function()? onPressed;
+//   final AppColor color = AppColor.linkBlue;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: _buttonPadding,
+//       child: GestureDetector(
+//         onTap: onPressed,
+//         child: Container(
+//           decoration: BoxDecoration(
+//             borderRadius: kAppBorderRadius,
+//           ),
+//           constraints: const BoxConstraints(
+//             minWidth: double.infinity,
+//             maxHeight: _buttonHeight,
+//             minHeight: _buttonHeight,
+//           ),
+//           child: Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
+//             child: Center(
+//                 child: AppText(
+//               text,
+//               fontColor: color,
+//               fontSize: _buttonTextSize,
+//               fontWeight: AppFontWeight.bold,
+//             )),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
-class AppTextButton extends StatelessWidget {
-  const AppTextButton(this.text, {this.onPressed, super.key});
-  final String text;
-  final void Function()? onPressed;
-  final AppColor color = AppColor.linkBlue;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: _buttonPadding,
-      child: GestureDetector(
-        onTap: onPressed,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: kAppBorderRadius,
-          ),
-          constraints: const BoxConstraints(
-            minWidth: double.infinity,
-            maxHeight: _buttonHeight,
-            minHeight: _buttonHeight,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
-            child: Center(
-                child: AppText(
-              text,
-              fontColor: color,
-              fontSize: _buttonTextSize,
-              fontWeight: AppFontWeight.bold,
-            )),
-          ),
-        ),
-      ),
-    );
-  }
-}
+// class AppScreenPadding extends StatelessWidget {
+//   const AppScreenPadding({this.child, super.key});
+//   final Widget? child;
 
-class AppScreenPadding extends StatelessWidget {
-  const AppScreenPadding({this.child, super.key});
-  final Widget? child;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: _appPadding,
+//       child: child,
+//     );
+//   }
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: _appPadding,
-      child: child,
-    );
-  }
-}
+// class AppDivider extends StatelessWidget {
+//   const AppDivider({super.key, this.height});
+//   final double? height;
 
-class AppDivider extends StatelessWidget {
-  const AppDivider({super.key, this.height});
-  final double? height;
-
-  @override
-  Widget build(BuildContext context) {
-    return Divider(
-      height: height,
-      color: AppTheme.greyColor[200],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Divider(
+//       height: height,
+//       color: AppTheme.greyColor[200],
+//     );
+//   }
+// }

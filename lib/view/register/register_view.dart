@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:secure_note/helpers/bottom_sheet_helper.dart';
@@ -39,6 +41,20 @@ class _RegisterViewState extends State<RegisterView> {
   IconData iconPassword = Icons.lock;
   bool senhaVisivel = false;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    log("Log registro");
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    log("Dispose view");
+  }
+
   String typeButton = "Autenticar-se com email";
 
   @override
@@ -48,22 +64,22 @@ class _RegisterViewState extends State<RegisterView> {
           title: const Text("Cadastro"),
           centerTitle: true,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Center(
-              child: SingleChildScrollView(
-            child: StreamBuilder<RegisterModelBloc>(
-                stream: widget.bloc.onFetchingData,
-                initialData: RegisterModelBloc(isLoading: false),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasError) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data!.isLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return Form(
+        body: Center(
+            child: SingleChildScrollView(
+          child: StreamBuilder<RegisterModelBloc>(
+              stream: widget.bloc.onFetchingData,
+              initialData: RegisterModelBloc(isLoading: false),
+              builder: (context, snapshot) {
+                if (!snapshot.hasError) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.isLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Form(
                         key: _formKey,
                         child: Column(children: [
                           AppForm(
@@ -120,31 +136,31 @@ class _RegisterViewState extends State<RegisterView> {
                             },
                           )
                         ]),
-                      );
-                    }
-                  } else {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      BottomSheetHelper().bottomSheetError(
-                          title: "Error",
-                          subtitle: snapshot.error.toString(),
-                          isDismissible: true,
-                          enableDrag: false,
-                          context: context,
-                          buttons: [
-                            AppOutlinedButton(
-                              "Back",
-                              onPressed: () {
-                                widget.bloc.navigatoPop();
-                              },
-                            ),
-                          ]);
-                    });
+                      ),
+                    );
                   }
+                } else {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    BottomSheetHelper().bottomSheetError(
+                        title: "Error",
+                        subtitle: snapshot.error.toString(),
+                        isDismissible: true,
+                        enableDrag: false,
+                        context: context,
+                        buttons: [
+                          AppOutlinedButton(
+                            "Back",
+                            onPressed: () {
+                              widget.bloc.navigatoPop();
+                            },
+                          ),
+                        ]);
+                  });
+                }
 
-                  return Container();
-                }),
-          )),
-        ));
+                return Container();
+              }),
+        )));
   }
 
   String? maskCell(value) {

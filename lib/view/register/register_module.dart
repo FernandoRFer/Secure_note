@@ -5,7 +5,8 @@ import 'package:secure_note/view/register/register_view.dart';
 class RegistesModule extends Module {
   @override
   List<Bind> get binds => [
-        Bind.singleton<IRegisterlBloc>((i) => RegisterlBloc()),
+        Bind.singleton<IRegisterlBloc>((i) => RegisterlBloc(),
+            onDispose: (bloc) => bloc.dispose()),
         Bind.singleton(
           (i) => RegisterView(i()),
         ),

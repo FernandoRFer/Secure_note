@@ -1,17 +1,34 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:rxdart/rxdart.dart';
+
 import 'package:secure_note/routes.dart';
 
-abstract class ISplashBloc {
-  Future<void> load();
-  void navigatoHome();
+class SplashModel {
+  bool iconData;
+
+  SplashModel({
+    this.iconData = true,
+  });
 }
 
-class SplashBloc extends BlocBase with ISplashBloc {
+abstract class ISplashBloc {
+  Stream<SplashModel> get onFetchingData;
+  Future<void> load();
+  void navigatoHome();
+  void dispose();
+}
+
+class SplashBloc extends BlocBase implements ISplashBloc {
+  final _fetchingDataController = BehaviorSubject<SplashModel>();
+
   @override
   Future<void> load() async {
     try {
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 1));
+      _fetchingDataController.add(SplashModel(iconData: false));
+      await Future.delayed(const Duration(seconds: 1));
       navigatoHome();
     } catch (e) {
       // _fetchingDataController.addError(
@@ -19,6 +36,9 @@ class SplashBloc extends BlocBase with ISplashBloc {
       // );
     }
   }
+
+  @override
+  Stream<SplashModel> get onFetchingData => _fetchingDataController.stream;
 
   @override
   void navigatoHome() {

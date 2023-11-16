@@ -5,8 +5,11 @@ import 'package:secure_note/view/home/home_view.dart';
 class HomeModule extends Module {
   @override
   List<Bind> get binds => [
-        Bind.singleton<IHomeBloc>((i) => HomeBloc()),
-        Bind.singleton((i) => HomeView(i())),
+        Bind.factory<IHomeBloc>(
+          (i) => HomeBloc(i()),
+          //  onDispose: (bloc) => bloc.dispose()
+        ),
+        Bind.factory((i) => HomeView(i())),
       ];
   @override
   List<ModularRoute> get routes => [
