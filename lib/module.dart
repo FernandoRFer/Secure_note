@@ -1,4 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:secure_note/helpers/global_error.dart';
 import 'package:secure_note/repositories/local_data_source/bd/db_note.dart';
 import 'package:secure_note/routes.dart';
 import 'package:secure_note/view/auth/auth_module.dart';
@@ -16,6 +17,7 @@ class AppModule extends Module {
 
   @override
   List<Bind> get binds => [
+        Bind.singleton<IGlobalError>((i) => GlobalError()),
         Bind.singleton<IDbNotes>(
           (i) => DbNotes(),
         ),
@@ -23,7 +25,7 @@ class AppModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        ModuleRoute('/', module: SplashModule()),
+        ModuleRoute(AppRoutes.splash, module: SplashModule()),
         ModuleRoute(AppRoutes.auth, module: AuthModule()),
         ModuleRoute(AppRoutes.home, module: HomeModule()),
         ModuleRoute(AppRoutes.register, module: RegistesModule()),

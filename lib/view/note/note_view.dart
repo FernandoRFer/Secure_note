@@ -26,7 +26,6 @@ class _NoteViewState extends State<NoteView> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
-  String textText = 'nada';
 
   @override
   void initState() {
@@ -60,6 +59,25 @@ class _NoteViewState extends State<NoteView> {
                         child: CircularProgressIndicator(),
                       );
                     }
+                    if (snapshot.data!.success) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        BottomSheetHelper().bottomSheetError(
+                            title: "Sucesso",
+                            subtitle: snapshot.error.toString(),
+                            isDismissible: true,
+                            enableDrag: false,
+                            context: context,
+                            buttons: [
+                              AppOutlinedButton(
+                                "Back",
+                                onPressed: () {
+                                  widget.bloc.navigatoPop();
+                                },
+                              ),
+                            ]);
+                      });
+                    }
+
                     return Form(
                       key: _formKey,
                       child: Column(
@@ -69,6 +87,7 @@ class _NoteViewState extends State<NoteView> {
                             const SizedBox(height: 16),
                             AppFormText(
                                 labelText: "Titulo",
+                                maxLines: 1,
                                 controller: _nameController,
                                 validador: textValidator),
                             const SizedBox(height: 16),
@@ -77,7 +96,6 @@ class _NoteViewState extends State<NoteView> {
                                 controller: _noteController,
                                 validador: textValidator),
                             const SizedBox(height: 16),
-                            Text(textText)
                           ]),
                     );
                   }

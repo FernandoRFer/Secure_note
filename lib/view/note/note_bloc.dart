@@ -13,11 +13,11 @@ import 'package:secure_note/routes.dart';
 
 class NoteModelBloc {
   bool isLoading;
-  UserModel? userModel;
+  bool success;
 
   NoteModelBloc({
     this.isLoading = true,
-    this.userModel,
+    this.success = false,
   });
 }
 
@@ -29,7 +29,7 @@ abstract class INoteBloc {
   void dispose();
 }
 
-class NoteBloc extends BlocBase implements INoteBloc {
+class NoteBloc extends ChangeNotifier implements INoteBloc {
   final IDbNotes _dbNotes;
   NoteBloc(
     this._dbNotes,
@@ -41,10 +41,11 @@ class NoteBloc extends BlocBase implements INoteBloc {
     try {
       _fetchingDataController.add(NoteModelBloc(isLoading: true));
 
-      var save = await _dbNotes.salvarDbProdutos(noteModel);
+      var save = await _dbNotes.insert(noteModel);
       log(save.toString());
 
-      _fetchingDataController.add(NoteModelBloc(isLoading: false));
+      _fetchingDataController
+          .add(NoteModelBloc(isLoading: false, success: true));
 
       return true;
     } catch (e) {

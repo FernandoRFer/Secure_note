@@ -95,6 +95,7 @@ class AppFormText extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
+  final int? maxLines;
 
   const AppFormText({
     this.borderSideColor,
@@ -109,6 +110,7 @@ class AppFormText extends StatefulWidget {
     this.inputFormatters,
     this.controller,
     this.keyboardType,
+    this.maxLines,
     super.key,
   });
 
@@ -122,7 +124,7 @@ class _AppFormTexteState extends State<AppFormText> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        maxLines: null,
+        maxLines: widget.maxLines,
         controller: widget.controller,
         keyboardType: widget.keyboardType,
         onChanged: widget.onChanged ?? (value) {},

@@ -6,7 +6,7 @@ class HomeModule extends Module {
   @override
   List<Bind> get binds => [
         Bind.factory<IHomeBloc>(
-          (i) => HomeBloc(i()),
+          (i) => HomeBloc(i(), i()),
           //  onDispose: (bloc) => bloc.dispose()
         ),
         Bind.factory((i) => HomeView(i())),

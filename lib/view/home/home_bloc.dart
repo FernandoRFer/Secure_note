@@ -1,8 +1,8 @@
 import 'dart:developer';
-
-import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:secure_note/helpers/global_error.dart';
 import 'package:secure_note/repositories/local_data_source/Model/note_model.dart';
 import 'package:secure_note/repositories/local_data_source/bd/db_note.dart';
 import 'package:secure_note/routes.dart';
@@ -19,13 +19,16 @@ abstract class IHomeBloc {
   void navigatorNote();
   void dispose();
   Future<void> load();
+
+  void removeNote(int id);
 }
 
-class HomeBloc extends BlocBase implements IHomeBloc {
+class HomeBloc extends ChangeNotifier implements IHomeBloc {
   final IDbNotes _dbNotes;
+  final IGlobalError _globalError;
 
   final _fetchingDataController = BehaviorSubject<HomeModel>();
-  HomeBloc(this._dbNotes);
+  HomeBloc(this._dbNotes, this._globalError);
 
   List<NoteModel> _listNote = [];
 
@@ -37,15 +40,40 @@ class HomeBloc extends BlocBase implements IHomeBloc {
     try {
       _fetchingDataController.add(HomeModel(isloading: true));
 
-      _listNote = await _dbNotes.getProduct(null);
+      _listNote = await _dbNotes.get(null);
 
       _fetchingDataController.add(HomeModel(
         list: _listNote.reversed.toList(),
         isloading: false,
       ));
-    } catch (e) {
+    } catch (exception, stackTrace) {
+      final error = await _globalError.errorHandling(
+          "Um erro  ocorreu ao conectar, tente novamente",
+          exception,
+          stackTrace);
       _fetchingDataController.addError(
-        "Um erro  ocorreu ao conectar, tente novamente - $e",
+        error.message,
+      );
+    }
+  }
+
+  @override
+  void removeNote(int id) async {
+    try {
+      _fetchingDataController.add(HomeModel(isloading: true));
+
+      var result = await _dbNotes.remove(id);
+
+      log("result $result");
+
+      load();
+    } catch (exception, stackTrace) {
+      final error = await _globalError.errorHandling(
+          "Um erro  ocorreu ao conectar, tente novamente",
+          exception,
+          stackTrace);
+      _fetchingDataController.addError(
+        error.message,
       );
     }
   }

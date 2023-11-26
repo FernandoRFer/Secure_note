@@ -26,7 +26,7 @@ abstract class IRegisterlBloc {
   void dispose();
 }
 
-class RegisterlBloc extends BlocBase implements IRegisterlBloc {
+class RegisterlBloc extends ChangeNotifier implements IRegisterlBloc {
   final _fetchingDataController = BehaviorSubject<RegisterModelBloc>();
 
   @override

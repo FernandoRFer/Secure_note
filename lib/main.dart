@@ -5,6 +5,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:secure_note/module.dart';
 
 void main() {
+  // final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  // final globalRouteObserver = GlobalRouteObserver();
+
+  // WidgetsFlutterBinding.ensureInitialized();
+
+  // AppModule(navigatorKey, globalRouteObserver).configure();
+
   return runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }
 

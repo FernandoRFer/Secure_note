@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -20,15 +21,16 @@ abstract class ISplashBloc {
   void dispose();
 }
 
-class SplashBloc extends BlocBase implements ISplashBloc {
+class SplashBloc extends ChangeNotifier implements ISplashBloc {
   final _fetchingDataController = BehaviorSubject<SplashModel>();
 
   @override
   Future<void> load() async {
     try {
-      await Future.delayed(const Duration(seconds: 1));
-      _fetchingDataController.add(SplashModel(iconData: false));
-      await Future.delayed(const Duration(seconds: 1));
+      // carregamento de funções
+      // await Future.delayed(const Duration(seconds: 1));
+      // _fetchingDataController.add(SplashModel(iconData: false));
+      // await Future.delayed(const Duration(seconds: 1));
       navigatoHome();
     } catch (e) {
       // _fetchingDataController.addError(

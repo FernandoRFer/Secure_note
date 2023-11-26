@@ -7,8 +7,9 @@ import 'package:path/path.dart';
 import '../Model/note_model.dart';
 
 abstract class IDbNotes {
-  Future<int> salvarDbProdutos(NoteModel produtoModel);
-  Future<List<NoteModel>> getProduct(int? id);
+  Future<int> insert(NoteModel produtoModel);
+  Future<List<NoteModel>> get(int? id);
+  Future<int> remove(int id);
 }
 
 class DbNotes implements IDbNotes {
@@ -48,7 +49,7 @@ class DbNotes implements IDbNotes {
   }
 
   @override
-  Future<int> salvarDbProdutos(NoteModel produtoModel) async {
+  Future<int> insert(NoteModel produtoModel) async {
     Database bancoDados = await db;
     var usuario = produtoModel.toJson();
 
@@ -57,7 +58,7 @@ class DbNotes implements IDbNotes {
   }
 
   @override
-  Future<List<NoteModel>> getProduct(int? id) async {
+  Future<List<NoteModel>> get(int? id) async {
     var bancoDados = await db;
     String sql;
     if (id != null) {
@@ -77,20 +78,27 @@ class DbNotes implements IDbNotes {
     return listaTemporaria;
   }
 
-  Future<void> updateUser(NoteModel produtoModel) async {
-    var bancoDados = await db;
-    String sql =
-        "UPDATE $_tableName SET Produtos = '${produtoModel.title}' , Descricao = '${produtoModel.note}'  WHERE id = ${produtoModel.id}";
-
-    var result = await bancoDados.rawQuery(sql);
-    log(result);
-
-    return result;
-  }
-
-  Future<int> removeProduct(int? id) async {
+  @override
+  Future<int> remove(int id) async {
     var bancoDados = await db;
     return await bancoDados
         .delete(_tableName, where: "id = ?", whereArgs: [id]);
   }
+
+  // Future<void> updateUser(NoteModel produtoModel) async {
+  //   var bancoDados = await db;
+  //   String sql =
+  //       "UPDATE $_tableName SET Produtos = '${produtoModel.title}' , Descricao = '${produtoModel.note}'  WHERE id = ${produtoModel.id}";
+
+  //   var result = await bancoDados.rawQuery(sql);
+  //   log(result);
+
+  //   return result;
+  // }
+
+  // Future<int> removeProduct(int? id) async {
+  //   var bancoDados = await db;
+  //   return await bancoDados
+  //       .delete(_tableName, where: "id = ?", whereArgs: [id]);
+  // }
 }
