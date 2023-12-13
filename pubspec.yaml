@@ -44,6 +44,8 @@ dependencies:
   pos: ^0.3.1
   flutter_animate: ^4.1.1+1
   shared_preferences: ^2.1.1
+  angles: ^2.1.1
+  font_awesome_flutter: ^10.6.0
 
 dev_dependencies:
   flutter_test:

@@ -61,20 +61,21 @@ class _NoteViewState extends State<NoteView> {
                     }
                     if (snapshot.data!.success) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        BottomSheetHelper().bottomSheetError(
-                            title: "Sucesso",
-                            subtitle: snapshot.error.toString(),
-                            isDismissible: true,
-                            enableDrag: false,
-                            context: context,
-                            buttons: [
-                              AppOutlinedButton(
-                                "Back",
-                                onPressed: () {
-                                  widget.bloc.navigatoPop();
-                                },
-                              ),
-                            ]);
+                        BottomSheetHelper().showSuccess(context: context);
+                        // BottomSheetHelper().bottomSheetError(
+                        //     title: "Sucesso",
+                        //     subtitle: "Nota salva",
+                        //     isDismissible: true,
+                        //     enableDrag: false,
+                        //     context: context,
+                        //     buttons: [
+                        //       AppOutlinedButton(
+                        //         "Back",
+                        //         onPressed: () {
+                        //           widget.bloc.navigatoPop();
+                        //         },
+                        //       ),
+                        //     ]);
                       });
                     }
 
@@ -124,11 +125,10 @@ class _NoteViewState extends State<NoteView> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            var note = NoteModel(
-                note: _noteController.text, title: _nameController.text);
-            widget.bloc.saveRegister(note);
-
-            log("Log registro $note");
+            await widget.bloc.saveRegister(NoteModel(
+                note: _noteController.text, title: _nameController.text));
+            _nameController.clear();
+            _noteController.clear();
           }
         },
         child: const Icon(Icons.save_alt),
@@ -145,18 +145,18 @@ class _NoteViewState extends State<NoteView> {
     }
   }
 
-  void shared(String value) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('note', value);
-    final String? note = prefs.getString('note');
-    log(note ?? '');
-  }
+  // void shared(String value) async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('note', value);
+  //   final String? note = prefs.getString('note');
+  //   log(note ?? '');
+  // }
 
-  Future<String> sharedGet() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Future<String> sharedGet() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final String? note = prefs.getString('note');
-    log(note ?? '');
-    return note ?? '';
-  }
+  //   final String? note = prefs.getString('note');
+  //   log(note ?? '');
+  //   return note ?? '';
+  // }
 }

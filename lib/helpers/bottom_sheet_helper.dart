@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:secure_note/view/success/success_view.dart';
 
 class BottomSheetHelper {
   Future<bool?> bottomSheetError({
@@ -71,51 +72,20 @@ class BottomSheetHelper {
       }),
     );
   }
+
+  Future<bool?> showSuccess(
+      {List<Widget>? buttons, required BuildContext context}) async {
+    return await showModalBottomSheet<bool>(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      builder: ((context) {
+        return const SuccessView();
+      }),
+    );
+  }
 }
-
-// Future<bool?> showBottomSheetButtons(
-//     {List<Widget>? buttons, required BuildContext context}) async {
-//   return await showModalBottomSheet<bool>(
-//     context: context,
-//     shape: RoundedRectangleBorder(
-//       borderRadius: BorderRadius.circular(5.0),
-//     ),
-//     builder: ((context) {
-//       return SizedBox(
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             Row(
-//               children: [
-//                 Flexible(
-//                   flex: 4,
-//                   child: Container(),
-//                 ),
-//                 const Flexible(
-//                     flex: 2,
-//                     child: Divider(
-//                       thickness: 2,
-//                       color: AppTheme.greyColor,
-//                     )),
-//                 Flexible(
-//                   flex: 4,
-//                   child: Container(),
-//                 ),
-//               ],
-//             ),
-//             AppScreenPadding(
-//               child: Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [...buttons ?? []],
-//               ),
-//             ),
-//           ],
-//         ),
-//       );
-//     }),
-//   );
-// }
-
 // Future<bool?> showBottomCounter({
 //   String title = "",
 //   String subtitle = "",

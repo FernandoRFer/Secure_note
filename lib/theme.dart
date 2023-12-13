@@ -684,18 +684,18 @@ abstract class LinkBlueColor {
 //   }
 // }
 
-// class AppScreenPadding extends StatelessWidget {
-//   const AppScreenPadding({this.child, super.key});
-//   final Widget? child;
+class AppScreenPadding extends StatelessWidget {
+  const AppScreenPadding({this.child, super.key});
+  final Widget? child;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: _appPadding,
-//       child: child,
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: _appPadding,
+      child: child,
+    );
+  }
+}
 
 // class AppDivider extends StatelessWidget {
 //   const AppDivider({super.key, this.height});
