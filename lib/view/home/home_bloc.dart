@@ -20,7 +20,7 @@ abstract class IHomeBloc {
   void dispose();
   Future<void> load();
 
-  void removeNote(int id);
+  Future<void> removeNote(int id);
 }
 
 class HomeBloc extends ChangeNotifier implements IHomeBloc {
@@ -58,12 +58,10 @@ class HomeBloc extends ChangeNotifier implements IHomeBloc {
   }
 
   @override
-  void removeNote(int id) async {
+  Future<void> removeNote(int id) async {
     try {
-      _fetchingDataController.add(HomeModel(isloading: true));
-
+      // _fetchingDataController.add(HomeModel(isloading: true));
       var result = await _dbNotes.remove(id);
-
       log("result $result");
 
       load();

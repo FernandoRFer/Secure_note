@@ -124,26 +124,27 @@ class _AppFormTexteState extends State<AppFormText> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        maxLines: widget.maxLines,
-        controller: widget.controller,
-        keyboardType: widget.keyboardType,
-        onChanged: widget.onChanged ?? (value) {},
-        obscureText: senhaVisivel,
-        validator: widget.validador,
-        inputFormatters: widget.inputFormatters,
-        style: TextStyle(color: widget.textColor),
-        decoration: InputDecoration(
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                  //  color: Color.fromARGB(0, 0, 0, 0),
-                  ),
-            ),
-            labelText: widget.labelText,
-            labelStyle: TextStyle(color: widget.labelStyleColor),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-            focusedBorder: const OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Color.fromARGB(0, 0, 0, 0), width: 1.0),
-            )));
+      maxLines: widget.maxLines,
+      controller: widget.controller,
+      keyboardType: widget.keyboardType,
+      onChanged: widget.onChanged ?? (value) {},
+      obscureText: senhaVisivel,
+      validator: widget.validador,
+      inputFormatters: widget.inputFormatters,
+      style: TextStyle(color: widget.textColor),
+      decoration: InputDecoration(
+        // enabledBorder: const OutlineInputBorder(
+        //   borderSide: BorderSide(
+        //       //  color: Color.fromARGB(0, 0, 0, 0),
+        //       ),
+        // ),
+        labelText: widget.labelText,
+        labelStyle: TextStyle(color: widget.labelStyleColor),
+        // border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        // focusedBorder: const OutlineInputBorder(
+        //   borderSide: BorderSide(color: Color.fromARGB(0, 0, 0, 0), width: 1.0),
+        // ),
+      ),
+    );
   }
 }
