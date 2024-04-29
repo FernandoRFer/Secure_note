@@ -1,22 +1,28 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:secure_note/module.dart';
+import 'package:secure_note/core/module.dart';
+import 'package:secure_note/core/navigator_observer.dart';
+import 'package:secure_note/core/router/routes.dart';
 
 void main() {
-  // final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-  // final globalRouteObserver = GlobalRouteObserver();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  final globalRouteObserver = GlobalRouteObserver();
+  GlobalRouteObserver();
 
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // AppModule(navigatorKey, globalRouteObserver).configure();
+  AppModule(navigatorKey).configure();
 
-  return runApp(ModularApp(module: AppModule(), child: const AppWidget()));
+  return runApp(AppWidget(navigatorKey, globalRouteObserver));
 }
 
 class AppWidget extends StatefulWidget {
-  const AppWidget({super.key});
+  final GlobalKey<NavigatorState> _navigatorKey;
+  final GlobalRouteObserver _globalRouteObserver;
+  const AppWidget(
+    this._navigatorKey,
+    this._globalRouteObserver, {
+    super.key,
+  });
 
   @override
   State<AppWidget> createState() => _AppWidgetState();
@@ -46,8 +52,11 @@ class _AppWidgetState extends State<AppWidget> {
       //onPrimary: Colors.white,
       //brightness: Brightness.dark,
     );
-    return MaterialApp.router(
+    return MaterialApp(
+      navigatorObservers: [widget._globalRouteObserver],
       debugShowCheckedModeBanner: false,
+      debugShowMaterialGrid: false,
+      navigatorKey: widget._navigatorKey,
       title: 'Secure Note',
       theme: ThemeData(
         fontFamily: "exo2",
@@ -65,8 +74,8 @@ class _AppWidgetState extends State<AppWidget> {
         ),
         colorScheme: colorScheme,
       ),
-      routeInformationParser: Modular.routeInformationParser,
-      routerDelegate: Modular.routerDelegate,
+      initialRoute: AppRoutes.initial,
+      routes: AppRoutes.routes,
     );
   }
 }

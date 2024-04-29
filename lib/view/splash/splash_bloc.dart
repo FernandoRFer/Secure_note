@@ -1,10 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:secure_note/routes.dart';
+import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/router/routes.dart';
 
 class SplashModel {
   bool iconData;
@@ -23,6 +22,11 @@ abstract class ISplashBloc {
 
 class SplashBloc extends ChangeNotifier implements ISplashBloc {
   final _fetchingDataController = BehaviorSubject<SplashModel>();
+
+  final INavigatorApp _navigatorApp;
+  SplashBloc(
+    this._navigatorApp,
+  );
 
   @override
   Future<void> load() async {
@@ -44,6 +48,6 @@ class SplashBloc extends ChangeNotifier implements ISplashBloc {
 
   @override
   void navigatoHome() {
-    Modular.to.navigate(AppRoutes.auth);
+    _navigatorApp.pushNamed(AppRoutes.auth);
   }
 }

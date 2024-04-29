@@ -1,14 +1,14 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'dart:developer';
 
-abstract class INavigator {
-  void navigate<T extends Object>(
-    String routeName,
-  );
-  Future<T?> pushReplacementNamed<T extends Object>(
-    String routeName, {
-    Object? arguments,
-  });
+import 'package:flutter/widgets.dart';
+import 'package:secure_note/core/navigator_observer.dart';
+
+abstract class INavigatorApp {
+  Future<T?> pushReplacementNamed<T extends Object, TO extends Object>(
+      String routeName,
+      {TO? result,
+      Object? arguments});
+
   Future<T?> pushNamed<T extends Object>(String routeName, {Object? arguments});
 
   Future<T?> popAndPushNamed<T extends Object>(String routeName,
@@ -16,111 +16,62 @@ abstract class INavigator {
 
   void popUntil(String routeName);
   void pop<T extends Object>([T? result]);
-  Future<T?> pushNamedAndRemoveUntil<T extends Object>(
-    String routeName,
-    bool Function(Route p1) predicate, {
-    Object? arguments,
-  });
+
   String? currentRoute();
 
-  // BuildContext? get currentContext;
+  BuildContext? get currentContext;
 }
 
-class Navigator extends ChangeNotifier implements INavigator {
-  // final GlobalKey<NavigatorState> navigatorKey;
-  // final IAppLog _appLog;
-  // final GlobalRouteObserver _globalRouteObserver;
+class NavigatorApp implements INavigatorApp {
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  NavigatorApp(
+    this.navigatorKey,
+  );
 
   @override
-  Future<T?> pushReplacementNamed<T extends Object>(String routeName,
-      {Object? arguments}) async {
-    try {
-      return await Modular.to
-          .pushReplacementNamed(routeName, arguments: arguments);
-    } catch (e) {
-      // _appLog.severe(
-      //     "pushReplacementNamed $routeName fatal error... Reiniciando app");
-    }
-    return null;
+  Future<T?> pushReplacementNamed<T extends Object, TO extends Object>(
+      String routeName,
+      {TO? result,
+      Object? arguments}) async {
+    return await navigatorKey.currentState!
+        .pushReplacementNamed(routeName, result: result, arguments: arguments);
   }
 
   @override
   Future<T?> pushNamed<T extends Object>(String routeName,
       {Object? arguments}) async {
     try {
-      return await Modular.to.pushNamed(routeName, arguments: arguments);
+      return await navigatorKey.currentState!
+          .pushNamed(routeName, arguments: arguments);
     } catch (e) {
-      // _appLog.severe("pushNamed $routeName fatal error... Reiniciando app");
+      log(e.toString());
     }
     return null;
   }
 
   @override
   void pop<T extends Object>([T? result]) {
-    try {
-      Modular.to.pop(result);
-    } catch (e) {
-      // _appLog.severe("pop fatal error... Reiniciando app");
-    }
+    navigatorKey.currentState?.pop(result);
   }
 
   @override
   void popUntil(String routeName) {
-    try {
-      Modular.to.popUntil(ModalRoute.withName(routeName));
-    } catch (e) {
-      // _appLog.severe("popUntil $routeName fatal error... Reiniciando app");
-    }
+    navigatorKey.currentState?.popUntil(ModalRoute.withName(routeName));
   }
 
   @override
   Future<T?> popAndPushNamed<T extends Object>(String routeName,
       {Object? arguments}) async {
-    try {
-      return Modular.to.popAndPushNamed(routeName, arguments: arguments);
-    } catch (e) {
-      // _appLog.severe("popUntil $routeName fatal error... Reiniciando app");
-    }
-    return null;
-  }
-
-  // @override
-  // BuildContext? get currentContext => navigatorKey.currentContext;
-
-  @override
-  Future<T?> pushNamedAndRemoveUntil<T extends Object>(
-    String routeName,
-    bool Function(Route p1) predicate, {
-    Object? arguments,
-  }) async {
-    try {
-      return await Modular.to.pushNamedAndRemoveUntil(
-        routeName,
-        (route) => false,
-        arguments: arguments,
-      );
-    } catch (e) {
-      // _appLog.severe("popUntil $routeName fatal error... Reiniciando app");
-    }
-    return null;
+    return navigatorKey.currentState
+        ?.popAndPushNamed(routeName, arguments: arguments);
   }
 
   @override
-  void navigate<T extends Object>(
-    String routeName,
-  ) async {
-    try {
-      return Modular.to.navigate(
-        routeName,
-      );
-    } catch (e) {
-      // _appLog.severe("popUntil $routeName fatal error... Reiniciando app");
-    }
-    return null;
-  }
+  BuildContext? get currentContext => navigatorKey.currentContext;
 
   @override
   String? currentRoute() {
-    return Modular.to.path;
+    return GlobalRouteObserver.routeStack.last;
   }
 }

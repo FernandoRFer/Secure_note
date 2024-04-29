@@ -1,0 +1,85 @@
+import 'dart:developer';
+
+import 'package:flutter/widgets.dart';
+
+class GlobalRouteObserver extends NavigatorObserver {
+  static final GlobalRouteObserver _singleton = GlobalRouteObserver._internal();
+
+  factory GlobalRouteObserver() {
+    return _singleton;
+  }
+
+  GlobalRouteObserver._internal();
+
+  static List<String> routeStack = [];
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    if (route.settings.name != null) {
+      routeStack.removeLast();
+      navigationTreeRegistration(ENavigatorActions.pop);
+    }
+  }
+
+  @override
+  void didPush(Route route, Route? previousRoute) {
+    if (route.settings.name != null) {
+      routeStack.add(route.settings.name!);
+      navigationTreeRegistration(
+          ENavigatorActions.pushNamed, route.settings.name);
+    }
+  }
+
+  @override
+  void didRemove(Route route, Route? previousRoute) {
+    if (previousRoute != null) {
+      routeStack.removeLast();
+    }
+  }
+
+  @override
+  void didReplace({Route? newRoute, Route? oldRoute}) {
+    if (oldRoute != null) {
+      routeStack.removeLast();
+    }
+    if (newRoute != null && newRoute.settings.name != null) {
+      routeStack.add(newRoute.settings.name!);
+      navigationTreeRegistration(
+          ENavigatorActions.pushReplacementNamed, newRoute.settings.name!);
+    }
+  }
+
+  void navigationTreeRegistration(ENavigatorActions action,
+      [String? routeName]) {
+    final appTree = GlobalRouteObserver.routeStack.join("");
+
+    // LOG
+
+    log("NAVIGATOR --> ACTION: ${_getActionName(action)} | ROUTENAME: $routeName | ROUTETREE: $appTree");
+  }
+}
+
+enum ENavigatorActions {
+  pop,
+  pushNamed,
+  pushReplacementNamed,
+  // pushNamedAndRemoveUntil,
+  popAndPushNamed,
+  popUntil,
+}
+
+Map<ENavigatorActions, String> _actionNames = {
+  ENavigatorActions.pop: "Pop",
+  ENavigatorActions.pushNamed: "PushNamed",
+  ENavigatorActions.pushReplacementNamed: "PushReplacementNamed",
+  // ENavigatorActions.pushNamedAndRemoveUntil: "PushNamedAndRemoveUntil",
+  ENavigatorActions.popAndPushNamed: "PopAndPushNamed",
+  ENavigatorActions.popUntil: "PopUntil",
+};
+
+String _getActionName(ENavigatorActions action) {
+  if (_actionNames.containsKey(action)) {
+    return _actionNames[action] ?? "";
+  }
+  return "";
+}
