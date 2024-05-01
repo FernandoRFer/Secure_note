@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,7 +18,7 @@ class SplashModel {
 abstract class ISplashBloc {
   Stream<SplashModel> get onFetchingData;
   Future<void> load();
-  void navigatoHome();
+  Future<void> navigatoHome();
   void dispose();
 }
 
@@ -47,7 +49,7 @@ class SplashBloc extends ChangeNotifier implements ISplashBloc {
   Stream<SplashModel> get onFetchingData => _fetchingDataController.stream;
 
   @override
-  void navigatoHome() {
-    _navigatorApp.pushNamed(AppRoutes.auth);
+  Future<void> navigatoHome() async {
+    await _navigatorApp.pushNamed(AppRoutes.auth).then((_) => load());
   }
 }

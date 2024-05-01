@@ -51,6 +51,7 @@ class _AuthViewState extends State<AuthView> {
         appBar: AppBar(
           title: const Text(""),
           centerTitle: true,
+          automaticallyImplyLeading: false,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

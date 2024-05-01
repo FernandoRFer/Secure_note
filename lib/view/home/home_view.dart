@@ -39,6 +39,7 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
           title: const Text('Home'),
           centerTitle: true,
+          automaticallyImplyLeading: false,
           actions: <Widget>[
             // botoes de acções
             IconButton(
