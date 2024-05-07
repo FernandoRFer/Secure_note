@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:secure_note/helpers/bottom_sheet_helper.dart';
 import 'package:secure_note/main.dart';
 import 'package:secure_note/view/home/home_bloc.dart';
@@ -19,12 +20,15 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   //Passar para shared
-  bool _brightness = false; // false = dart, true = light
+  final bool _brightness = false; // false = dart, true = light
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, widget.bloc.load);
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      widget.bloc.load();
+    });
+    // Future.delayed(Duration.zero, widget.bloc.load);
   }
 
   @override
@@ -40,22 +44,22 @@ class _HomeViewState extends State<HomeView> {
           title: const Text('Home'),
           centerTitle: true,
           automaticallyImplyLeading: false,
-          actions: <Widget>[
+          actions: const <Widget>[
             // botoes de acções
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    _brightness = !_brightness;
-                    if (_brightness) {
-                      AppWidget.of(context)!.changeTheme(Brightness.dark);
-                    } else {
-                      AppWidget.of(context)!.changeTheme(Brightness.light);
-                    }
-                  });
-                },
-                icon: _brightness
-                    ? const Icon(Icons.flashlight_off)
-                    : const Icon(Icons.flashlight_on)),
+            // IconButton(
+            //     onPressed: () {
+            //       setState(() {
+            //         _brightness = !_brightness;
+            //         if (_brightness) {
+            //           AppWidget.of(context)!.changeTheme(Brightness.dark);
+            //         } else {
+            //           AppWidget.of(context)!.changeTheme(Brightness.light);
+            //         }
+            //       });
+            //     },
+            //     icon: _brightness
+            //         ? const Icon(Icons.flashlight_off)
+            //         : const Icon(Icons.flashlight_on)),
             // IconButton(
             //   icon: const Icon(Icons.settings_applications_sharp),
             //   onPressed: () {},

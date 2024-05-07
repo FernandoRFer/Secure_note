@@ -4,6 +4,6 @@ import 'package:secure_note/repositories/local_data_source/bd/db_note.dart';
 class RepositoriesModude {
   static GetIt getIt = GetIt.instance;
   void configutarion() {
-    getIt.registerLazySingleton<IDbNotes>(() => DbNotes());
+    getIt.registerSingleton<IDbNotes>(DbNotes());
   }
 }

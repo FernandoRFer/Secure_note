@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:sqflite/sqflite.dart';
 // ignore: depend_on_referenced_packages
@@ -10,6 +11,7 @@ abstract class IDbNotes {
   Future<int> insert(NoteModel produtoModel);
   Future<List<NoteModel>> get(int? id);
   Future<int> remove(int id);
+  Future<void> update(NoteModel produtoModel);
 }
 
 class DbNotes implements IDbNotes {
@@ -32,17 +34,17 @@ class DbNotes implements IDbNotes {
     return _db;
   }
 
-  _onCreate(Database db, int version) {
+  Future<void> _onCreate(Database db, int version) async {
     String sql =
         "CREATE TABLE $_tableName (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,$_idUser int ,$_title VARCHAR ,$_note VARCHAR)";
-    db.execute(sql);
+    await db.execute(sql);
   }
 
   Future<Database> starDB() async {
     final caminhoBancoDados = await getDatabasesPath();
     final localBancoDados = join(caminhoBancoDados, "produtos.db");
 
-    var db =
+    Database db =
         await openDatabase(localBancoDados, version: 1, onCreate: _onCreate);
 
     return db;
@@ -85,20 +87,22 @@ class DbNotes implements IDbNotes {
         .delete(_tableName, where: "id = ?", whereArgs: [id]);
   }
 
-  // Future<void> updateUser(NoteModel produtoModel) async {
-  //   var bancoDados = await db;
-  //   String sql =
-  //       "UPDATE $_tableName SET Produtos = '${produtoModel.title}' , Descricao = '${produtoModel.note}'  WHERE id = ${produtoModel.id}";
+  @override
+  Future<void> update(NoteModel produtoModel) async {
+    var bancoDados = await db;
+    final set = jsonEncode(produtoModel.toJson());
+    String sql =
+        "UPDATE $_tableName SET Produtos = '${produtoModel.title}' , Descricao = '${produtoModel.note}'  WHERE id = ${produtoModel.id}";
 
-  //   var result = await bancoDados.rawQuery(sql);
-  //   log(result);
+    var result = await bancoDados.rawQuery(sql);
+    log(result);
 
-  //   return result;
-  // }
+    return result;
+  }
 
-  // Future<int> removeProduct(int? id) async {
-  //   var bancoDados = await db;
-  //   return await bancoDados
-  //       .delete(_tableName, where: "id = ?", whereArgs: [id]);
-  // }
+  Future<int> removeProduct(int? id) async {
+    var bancoDados = await db;
+    return await bancoDados
+        .delete(_tableName, where: "id = ?", whereArgs: [id]);
+  }
 }

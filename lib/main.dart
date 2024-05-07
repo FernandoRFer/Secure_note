@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:secure_note/core/module.dart';
 import 'package:secure_note/core/navigator_observer.dart';
 import 'package:secure_note/core/router/routes.dart';
+import 'package:secure_note/core/theme/preferencies_user.dart';
 
-void main() {
+void main() async {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   final globalRouteObserver = GlobalRouteObserver();
-  GlobalRouteObserver();
 
   WidgetsFlutterBinding.ensureInitialized();
-
   AppModule(navigatorKey).configure();
+  final userTheme = GetIt.I.get<IUserTheme>();
+  await userTheme.setColor();
 
-  return runApp(AppWidget(navigatorKey, globalRouteObserver));
+  return runApp(ThemeWidget(
+      notifier: userTheme,
+      child: AppWidget(navigatorKey, globalRouteObserver)));
 }
 
 class AppWidget extends StatefulWidget {
@@ -26,32 +30,13 @@ class AppWidget extends StatefulWidget {
 
   @override
   State<AppWidget> createState() => _AppWidgetState();
-  static _AppWidgetState? of(BuildContext context) =>
-      context.findAncestorStateOfType<_AppWidgetState>();
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  Brightness _brightness = Brightness.light;
-
-  void changeTheme(Brightness brightness) {
-    setState(() {
-      _brightness = brightness;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    var colorScheme = ColorScheme.fromSeed(
-      brightness: _brightness,
-      //secondary: const Color(0xff263238),
-      //primary: const Color(0xff263238),
-      seedColor: const Color.fromARGB(255, 1, 21, 30),
-      // background: const Color.fromARGB(255, 207, 207, 207),
-      // surface: const Color.fromARGB(255, 207, 207, 207),
-
-      //onPrimary: Colors.white,
-      //brightness: Brightness.dark,
-    );
+    final userTheme = ThemeWidget.of(context);
+    final userThmeModel = userTheme.value;
     return MaterialApp(
       navigatorObservers: [widget._globalRouteObserver],
       debugShowCheckedModeBanner: false,
@@ -59,6 +44,8 @@ class _AppWidgetState extends State<AppWidget> {
       navigatorKey: widget._navigatorKey,
       title: 'Secure Note',
       theme: ThemeData(
+        //  brightness: userThmeModel.brightness,
+        colorScheme: userThmeModel.colorScheme,
         fontFamily: "exo2",
         // primarySwatch: const Color(0xff263238),
         useMaterial3: true,
@@ -72,10 +59,20 @@ class _AppWidgetState extends State<AppWidget> {
             fontSize: 20,
           ),
         ),
-        colorScheme: colorScheme,
       ),
       initialRoute: AppRoutes.initial,
       routes: AppRoutes.routes,
     );
+  }
+}
+
+class ThemeWidget extends InheritedNotifier<IUserTheme> {
+  const ThemeWidget(
+      {Key? key, required IUserTheme notifier, required Widget child})
+      : super(key: key, child: child, notifier: notifier);
+
+  static IUserTheme of(BuildContext context) {
+    final inherited = context.dependOnInheritedWidgetOfExactType<ThemeWidget>();
+    return inherited!.notifier!;
   }
 }

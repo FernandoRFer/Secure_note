@@ -1,15 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:secure_note/components/appButton.dart';
+import 'package:secure_note/components/form.dart';
 import 'package:secure_note/helpers/bottom_sheet_helper.dart';
 import 'package:secure_note/repositories/local_data_source/Model/note_model.dart';
 import 'package:secure_note/view/note/note_bloc.dart';
 import 'package:secure_note/components/success.dart';
-
-import '../../components/appButton.dart';
-import '../../components/form.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NoteView extends StatefulWidget {
   final INoteBloc bloc;

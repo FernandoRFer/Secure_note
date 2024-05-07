@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/theme/preferencies_user.dart';
 import 'package:secure_note/helpers/global_error.dart';
 import 'package:secure_note/repositories/local_data_source/Model/note_model.dart';
 import 'package:secure_note/repositories/local_data_source/bd/db_note.dart';

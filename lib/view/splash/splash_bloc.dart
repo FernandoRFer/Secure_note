@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'package:secure_note/code/navigator_app.dart';
 import 'package:secure_note/core/router/routes.dart';
+import 'package:secure_note/core/theme/preferencies_user.dart';
 
 class SplashModel {
   bool iconData;
@@ -19,6 +20,7 @@ abstract class ISplashBloc {
   Stream<SplashModel> get onFetchingData;
   Future<void> load();
   Future<void> navigatoHome();
+  void setTheme();
   void dispose();
 }
 
@@ -26,17 +28,22 @@ class SplashBloc extends ChangeNotifier implements ISplashBloc {
   final _fetchingDataController = BehaviorSubject<SplashModel>();
 
   final INavigatorApp _navigatorApp;
+  final IUserTheme _userTheme;
   SplashBloc(
     this._navigatorApp,
+    this._userTheme,
   );
 
   @override
   Future<void> load() async {
     try {
+      await _userTheme.setColor();
       // carregamento de funções
       // await Future.delayed(const Duration(seconds: 1));
       // _fetchingDataController.add(SplashModel(iconData: false));
       // await Future.delayed(const Duration(seconds: 1));
+
+      _fetchingDataController.add(SplashModel(iconData: false));
       navigatoHome();
     } catch (e) {
       // _fetchingDataController.addError(
@@ -51,5 +58,10 @@ class SplashBloc extends ChangeNotifier implements ISplashBloc {
   @override
   Future<void> navigatoHome() async {
     await _navigatorApp.pushNamed(AppRoutes.auth).then((_) => load());
+  }
+
+  @override
+  void setTheme() async {
+    _userTheme.setColor();
   }
 }

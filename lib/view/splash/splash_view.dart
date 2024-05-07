@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'package:secure_note/view/splash/splash_bloc.dart';
 
@@ -15,15 +16,32 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView>
-    with SingleTickerProviderStateMixin {
+    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   ValueNotifier<bool> isAuth = ValueNotifier(false);
   late AnimationController _animation;
 
   @override
   void initState() {
-    // _animation = AnimationController(vsync: this , duration: const Duration(milliseconds: 400 ) )
-    Future.delayed(Duration.zero, widget.bloc.load);
     super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      widget.bloc.load();
+    });
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    // _animation = AnimationController(
+    //     vsync: this, duration: const Duration(milliseconds: 400));
+
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Future<void> didChangePlatformBrightness() async {
+    widget.bloc.setTheme();
+    super.didChangePlatformBrightness();
   }
 
   @override
@@ -55,11 +73,6 @@ class _SplashViewState extends State<SplashView>
                           child: child,
                         );
                       },
-                      // const Icon(
-                      //     Icons.lock_open,
-                      //     size: 100,
-                      //     key: ValueKey('Icon b'),
-                      //   ),
                     );
                   },
                 );
