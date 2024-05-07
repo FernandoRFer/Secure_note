@@ -39,13 +39,13 @@ class AuthBloc extends ChangeNotifier implements IAuthBloc {
       final LocalAuthentication auth = LocalAuthentication();
       if (!await auth.isDeviceSupported()) {
         return Modular.to.navigate(AppRoutes.home);
-        _fetchingDataController.add(AuthModelBloc(isLoading: false));
         // throw Exception(
         //     "É necessário que o dispositivo possua uma autenticação, por favor verifique a compatibilidade do aplicativo com seu dispositivo.");
       }
 
       authenticated = await auth.authenticate(
         localizedReason: 'Let OS determine authentication method',
+        // authMessages: ,
         options: const AuthenticationOptions(
           stickyAuth: true,
         ),

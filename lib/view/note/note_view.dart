@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:secure_note/helpers/bottom_sheet_helper.dart';
 import 'package:secure_note/repositories/local_data_source/Model/note_model.dart';
 import 'package:secure_note/view/note/note_bloc.dart';
+import 'package:secure_note/widget/success.dart';
 
 import '../../widget/appButton.dart';
 import '../../widget/form.dart';
@@ -61,21 +62,16 @@ class _NoteViewState extends State<NoteView> {
                     }
                     if (snapshot.data!.success) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        BottomSheetHelper().showSuccess(context: context);
-                        // BottomSheetHelper().bottomSheetError(
-                        //     title: "Sucesso",
-                        //     subtitle: "Nota salva",
-                        //     isDismissible: true,
-                        //     enableDrag: false,
-                        //     context: context,
-                        //     buttons: [
-                        //       AppOutlinedButton(
-                        //         "Back",
-                        //         onPressed: () {
-                        //           widget.bloc.navigatoPop();
-                        //         },
-                        //       ),
-                        //     ]);
+                        Successs().appShowDialog(
+                          title: "Salvo com sucesso",
+                          subtitle: snapshot.error.toString(),
+                          isDismissible: true,
+                          enableDrag: false,
+                          context: context,
+                          button: () {
+                            widget.bloc.navigatoPop();
+                          },
+                        );
                       });
                     }
 
