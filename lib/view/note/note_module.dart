@@ -6,7 +6,7 @@ class NoteModule {
   static GetIt getIt = GetIt.instance;
   void configure() {
     getIt
-      ..registerFactory<INoteBloc>(() => NoteBloc(getIt(), getIt()))
+      ..registerFactory<INoteBloc>(() => NoteBloc(getIt(), getIt(), getIt()))
       ..registerFactory(() => NoteView(getIt()));
   }
 }

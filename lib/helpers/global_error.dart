@@ -22,6 +22,7 @@ class GlobalError implements IGlobalError {
     Object? error,
     StackTrace? stackTrace,
   ]) async {
+    //Neste ponto podemos aplicar a captura de logs para controle de erros do sistema
     // _appLog.severe(message, [
     //   error,
     //   stackTrace,
@@ -78,7 +79,7 @@ Exemplo de aplicação
 final IGlobalError _globalError;
 
 catch (e) {
-  final globalError = await _globalError.globalError(
+  final globalError = await _globalError.errorHandling(
           descrição da função,
           e,
           StackTrace.current);

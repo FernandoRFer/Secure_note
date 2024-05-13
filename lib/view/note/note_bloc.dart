@@ -1,10 +1,13 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+
 import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/router/routes.dart';
+import 'package:secure_note/helpers/global_error.dart';
 import 'package:secure_note/repositories/local_data_source/Model/note_model.dart';
 import 'package:secure_note/repositories/local_data_source/bd/db_note.dart';
-import 'package:secure_note/core/router/routes.dart';
 
 class NoteModelBloc {
   bool isLoading;
@@ -27,10 +30,12 @@ abstract class INoteBloc {
 class NoteBloc extends ChangeNotifier implements INoteBloc {
   final IDbNotes _dbNotes;
   final INavigatorApp _navigatorApp;
+  final IGlobalError _globalError;
 
   NoteBloc(
     this._dbNotes,
     this._navigatorApp,
+    this._globalError,
   );
 
   final _fetchingDataController = BehaviorSubject<NoteModelBloc>();
@@ -54,9 +59,9 @@ class NoteBloc extends ChangeNotifier implements INoteBloc {
 
       return true;
     } catch (e) {
-      _fetchingDataController.addError(
-        "Um erro  ocorreu ao conectar, tente novamente - $e",
-      );
+      final globalError = await _globalError.errorHandling(
+          "Erro ao salvar registros", e, StackTrace.current);
+      _fetchingDataController.addError(globalError);
     }
     return false;
   }
