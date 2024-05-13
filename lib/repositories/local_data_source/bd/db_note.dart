@@ -20,13 +20,12 @@ class DbNotes implements IDbNotes {
   final String _title = "title";
   final String _note = "note";
 
-  static final DbNotes _dbMusica = DbNotes._();
   Database? _db;
 
+  static final DbNotes _dbMusica = DbNotes._();
   factory DbNotes() {
     return _dbMusica;
   }
-
   DbNotes._();
 
   get db async {

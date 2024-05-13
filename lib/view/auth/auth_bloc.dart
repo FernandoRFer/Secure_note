@@ -48,7 +48,8 @@ class AuthBloc extends ChangeNotifier implements IAuthBloc {
       }
 
       authenticated = await auth.authenticate(
-        localizedReason: 'Let OS determine authentication method',
+        localizedReason:
+            'Deixe o sistema operacional determinar o método de autenticação',
         // authMessages: ,
         // authMessages: ,
         options: const AuthenticationOptions(

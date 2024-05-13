@@ -43,6 +43,7 @@ class _AppWidgetState extends State<AppWidget> {
       debugShowMaterialGrid: false,
       navigatorKey: widget._navigatorKey,
       title: 'Secure Note',
+      //Passar tema para pasta Thema
       theme: ThemeData(
         //  brightness: userThmeModel.brightness,
         colorScheme: userThmeModel.colorScheme,
