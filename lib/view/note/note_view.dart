@@ -69,6 +69,16 @@ class _NoteViewState extends State<NoteView> {
                             widget.bloc.navigatoPop();
                           },
                         );
+                        Successs().appShowDialog(
+                          title: "Salvo com sucesso",
+                          subtitle: snapshot.error.toString(),
+                          isDismissible: true,
+                          enableDrag: false,
+                          context: context,
+                          button: () {
+                            widget.bloc.navigatoPop();
+                          },
+                        );
                       });
                     }
 

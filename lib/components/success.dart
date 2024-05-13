@@ -17,7 +17,7 @@ class Successs {
     Function()? button,
   }) {
     return showDialog(
-        barrierColor: Theme.of(context).colorScheme.surfaceVariant,
+        barrierColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {

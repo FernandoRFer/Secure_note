@@ -50,6 +50,7 @@ class AuthBloc extends ChangeNotifier implements IAuthBloc {
       authenticated = await auth.authenticate(
         localizedReason: 'Let OS determine authentication method',
         // authMessages: ,
+        // authMessages: ,
         options: const AuthenticationOptions(
           stickyAuth: true,
         ),
