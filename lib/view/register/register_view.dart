@@ -8,8 +8,8 @@ import 'package:secure_note/repositories/local_data_source/Model/user_model.dart
 
 import 'package:secure_note/view/register/register_bloc.dart';
 
-import '../../widget/appButton.dart';
-import '../../widget/form.dart';
+import '../../components/appButton.dart';
+import '../../components/form.dart';
 
 class RegisterView extends StatefulWidget {
   final IRegisterlBloc bloc;

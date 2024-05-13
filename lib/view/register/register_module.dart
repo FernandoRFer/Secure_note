@@ -1,19 +1,11 @@
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:get_it/get_it.dart';
 import 'package:secure_note/view/register/register_bloc.dart';
-import 'package:secure_note/view/register/register_view.dart';
 
-class RegistesModule extends Module {
-  @override
-  List<Bind> get binds => [
-        Bind.singleton<IRegisterlBloc>((i) => RegisterlBloc(),
-            onDispose: (bloc) => bloc.dispose()),
-        Bind.singleton(
-          (i) => RegisterView(i()),
-        ),
-      ];
-  @override
-  List<ModularRoute> get routes => [
-        ChildRoute(Modular.initialRoute,
-            child: (_, args) => Modular.get<RegisterView>()),
-      ];
+class RegistesModule {
+  static GetIt getIt = GetIt.instance;
+  void configure() {
+    getIt
+      ..registerFactory<IRegisterlBloc>(() => RegisterlBloc(getIt()))
+      ..registerFactory(() => RegisterlBloc(getIt()));
+  }
 }

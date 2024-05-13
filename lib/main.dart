@@ -1,55 +1,51 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:secure_note/module.dart';
+import 'package:get_it/get_it.dart';
+import 'package:secure_note/core/module.dart';
+import 'package:secure_note/core/navigator_observer.dart';
+import 'package:secure_note/core/router/routes.dart';
+import 'package:secure_note/core/theme/preferencies_user.dart';
 
-void main() {
-  // final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-  // final globalRouteObserver = GlobalRouteObserver();
+void main() async {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  final globalRouteObserver = GlobalRouteObserver();
 
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  AppModule(navigatorKey).configure();
+  final userTheme = GetIt.I.get<IUserTheme>();
+  await userTheme.setColor();
 
-  // AppModule(navigatorKey, globalRouteObserver).configure();
-
-  return runApp(ModularApp(module: AppModule(), child: const AppWidget()));
+  return runApp(ThemeWidget(
+      notifier: userTheme,
+      child: AppWidget(navigatorKey, globalRouteObserver)));
 }
 
 class AppWidget extends StatefulWidget {
-  const AppWidget({super.key});
+  final GlobalKey<NavigatorState> _navigatorKey;
+  final GlobalRouteObserver _globalRouteObserver;
+  const AppWidget(
+    this._navigatorKey,
+    this._globalRouteObserver, {
+    super.key,
+  });
 
   @override
   State<AppWidget> createState() => _AppWidgetState();
-  static _AppWidgetState? of(BuildContext context) =>
-      context.findAncestorStateOfType<_AppWidgetState>();
 }
 
 class _AppWidgetState extends State<AppWidget> {
-  Brightness _brightness = Brightness.light;
-
-  void changeTheme(Brightness brightness) {
-    setState(() {
-      _brightness = brightness;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    var colorScheme = ColorScheme.fromSeed(
-      brightness: _brightness,
-      //secondary: const Color(0xff263238),
-      //primary: const Color(0xff263238),
-      seedColor: const Color.fromARGB(255, 1, 21, 30),
-      // background: const Color.fromARGB(255, 207, 207, 207),
-      // surface: const Color.fromARGB(255, 207, 207, 207),
-
-      //onPrimary: Colors.white,
-      //brightness: Brightness.dark,
-    );
-    return MaterialApp.router(
+    final userTheme = ThemeWidget.of(context);
+    final userThmeModel = userTheme.value;
+    return MaterialApp(
+      navigatorObservers: [widget._globalRouteObserver],
       debugShowCheckedModeBanner: false,
+      debugShowMaterialGrid: false,
+      navigatorKey: widget._navigatorKey,
       title: 'Secure Note',
       theme: ThemeData(
+        //  brightness: userThmeModel.brightness,
+        colorScheme: userThmeModel.colorScheme,
         fontFamily: "exo2",
         // primarySwatch: const Color(0xff263238),
         useMaterial3: true,
@@ -63,10 +59,20 @@ class _AppWidgetState extends State<AppWidget> {
             fontSize: 20,
           ),
         ),
-        colorScheme: colorScheme,
       ),
-      routeInformationParser: Modular.routeInformationParser,
-      routerDelegate: Modular.routerDelegate,
+      initialRoute: AppRoutes.initial,
+      routes: AppRoutes.routes,
     );
+  }
+}
+
+class ThemeWidget extends InheritedNotifier<IUserTheme> {
+  const ThemeWidget(
+      {Key? key, required IUserTheme notifier, required Widget child})
+      : super(key: key, child: child, notifier: notifier);
+
+  static IUserTheme of(BuildContext context) {
+    final inherited = context.dependOnInheritedWidgetOfExactType<ThemeWidget>();
+    return inherited!.notifier!;
   }
 }

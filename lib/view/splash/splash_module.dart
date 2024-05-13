@@ -1,20 +1,12 @@
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:get_it/get_it.dart';
 import 'package:secure_note/view/splash/splash_bloc.dart';
 import 'package:secure_note/view/splash/splash_view.dart';
 
-class SplashModule extends Module {
-  @override
-  List<Bind> get binds => [
-        Bind.singleton<ISplashBloc>(
-          (i) => SplashBloc(),
-        ),
-        Bind.singleton(
-          (i) => SplashView(i()),
-        ),
-      ];
-  @override
-  List<ModularRoute> get routes => [
-        ChildRoute(Modular.initialRoute,
-            child: (_, args) => Modular.get<SplashView>()),
-      ];
+class SplashModule {
+  static GetIt getIt = GetIt.instance;
+  void configure() {
+    getIt
+      ..registerLazySingleton<ISplashBloc>(() => SplashBloc(getIt(), getIt()))
+      ..registerSingleton(() => SplashView(getIt()));
+  }
 }

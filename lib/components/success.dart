@@ -1,9 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:angles/angles.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 
 class Successs {
   appShowDialog({
@@ -17,7 +17,7 @@ class Successs {
     Function()? button,
   }) {
     return showDialog(
-        barrierColor: Theme.of(context).colorScheme.surfaceVariant,
+        barrierColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {

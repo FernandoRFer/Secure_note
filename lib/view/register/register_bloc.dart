@@ -1,12 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
-import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:rxdart/rxdart.dart';
 
+import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/router/routes.dart';
 import 'package:secure_note/repositories/local_data_source/Model/user_model.dart';
-import 'package:secure_note/routes.dart';
 
 class RegisterModelBloc {
   bool isLoading;
@@ -27,8 +27,13 @@ abstract class IRegisterlBloc {
 }
 
 class RegisterlBloc extends ChangeNotifier implements IRegisterlBloc {
-  final _fetchingDataController = BehaviorSubject<RegisterModelBloc>();
+  final INavigatorApp _navigatorApp;
 
+  RegisterlBloc(
+    this._navigatorApp,
+  );
+
+  final _fetchingDataController = BehaviorSubject<RegisterModelBloc>();
   @override
   Future<bool> saveRegister(UserModel userModel) async {
     try {
@@ -48,13 +53,13 @@ class RegisterlBloc extends ChangeNotifier implements IRegisterlBloc {
 
   @override
   void navigatoPop() {
-    Modular.to.pop();
     _fetchingDataController.add(RegisterModelBloc(isLoading: false));
+    _navigatorApp.pop();
   }
 
   @override
   void navigatoHome() {
-    Modular.to.popUntil(ModalRoute.withName(AppRoutes.home));
+    _navigatorApp.popUntil(AppRoutes.home);
   }
 
   @override

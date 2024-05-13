@@ -1,11 +1,12 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/theme/preferencies_user.dart';
 import 'package:secure_note/helpers/global_error.dart';
 import 'package:secure_note/repositories/local_data_source/Model/note_model.dart';
 import 'package:secure_note/repositories/local_data_source/bd/db_note.dart';
-import 'package:secure_note/routes.dart';
+import 'package:secure_note/core/router/routes.dart';
 
 class HomeModel {
   List<NoteModel>? list;
@@ -26,14 +27,21 @@ abstract class IHomeBloc {
 class HomeBloc extends ChangeNotifier implements IHomeBloc {
   final IDbNotes _dbNotes;
   final IGlobalError _globalError;
+  final INavigatorApp _navigatorApp;
 
   final _fetchingDataController = BehaviorSubject<HomeModel>();
-  HomeBloc(this._dbNotes, this._globalError);
+  HomeBloc(this._dbNotes, this._globalError, this._navigatorApp);
 
   List<NoteModel> _listNote = [];
 
   @override
   Stream<HomeModel> get onFetchingData => _fetchingDataController;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _fetchingDataController.close();
+  }
 
   @override
   Future<void> load() async {
@@ -78,18 +86,11 @@ class HomeBloc extends ChangeNotifier implements IHomeBloc {
 
   @override
   void navigatorRegister() {
-    Modular.to.pushNamed(AppRoutes.register).then((value) => load());
+    _navigatorApp.pushNamed(AppRoutes.register).then((value) => load());
   }
 
   @override
   void navigatorNote() {
-    Modular.to.pushNamed(AppRoutes.note).then((value) => load());
-  }
-
-  @override
-  void dispose() {
-    log("Dipose home");
-    // TODO: implement dispose
-    super.dispose();
+    _navigatorApp.pushNamed(AppRoutes.note).then((value) => load());
   }
 }

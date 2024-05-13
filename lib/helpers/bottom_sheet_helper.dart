@@ -73,18 +73,18 @@ class BottomSheetHelper {
     );
   }
 
-  Future<bool?> showSuccess(
-      {List<Widget>? buttons, required BuildContext context}) async {
-    return await showModalBottomSheet<bool>(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      builder: ((context) {
-        return const SuccessView();
-      }),
-    );
-  }
+  // Future<bool?> showSuccess(
+  //     {List<Widget>? buttons, required BuildContext context}) async {
+  //   return await showModalBottomSheet<bool>(
+  //     context: context,
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(5.0),
+  //     ),
+  //     builder: ((context) {
+  //       return const SuccessView();
+  //     }),
+  //   );
+  // }
 }
 // Future<bool?> showBottomCounter({
 //   String title = "",

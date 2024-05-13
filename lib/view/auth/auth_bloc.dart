@@ -1,9 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:secure_note/routes.dart';
+import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/router/routes.dart';
 
 class AuthModelBloc {
   bool isLoading;
@@ -22,14 +23,16 @@ abstract class IAuthBloc {
 
 class AuthBloc extends ChangeNotifier implements IAuthBloc {
   final _fetchingDataController = BehaviorSubject<AuthModelBloc>();
+  final INavigatorApp _navigatorApp;
+  AuthBloc(
+    this._navigatorApp,
+  );
 
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   log("Dipose auth");
-  //   super.dispose();
-  //   _fetchingDataController.close();
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+    _fetchingDataController.close();
+  }
 
   @override
   Future<void> loadAuthenticate() async {
@@ -38,13 +41,15 @@ class AuthBloc extends ChangeNotifier implements IAuthBloc {
       _fetchingDataController.add(AuthModelBloc(isLoading: true));
       final LocalAuthentication auth = LocalAuthentication();
       if (!await auth.isDeviceSupported()) {
-        return Modular.to.navigate(AppRoutes.home);
+        _navigatorApp.pushNamed(AppRoutes.home);
+        return;
         // throw Exception(
         //     "É necessário que o dispositivo possua uma autenticação, por favor verifique a compatibilidade do aplicativo com seu dispositivo.");
       }
 
       authenticated = await auth.authenticate(
         localizedReason: 'Let OS determine authentication method',
+        // authMessages: ,
         // authMessages: ,
         options: const AuthenticationOptions(
           stickyAuth: true,
@@ -54,7 +59,7 @@ class AuthBloc extends ChangeNotifier implements IAuthBloc {
       if (authenticated) {
         // await Future.delayed(const Duration(seconds: 2));
 
-        Modular.to.navigate(AppRoutes.home);
+        _navigatorApp.pushNamed(AppRoutes.home);
         _fetchingDataController.add(AuthModelBloc(isLoading: false));
       } else {
         _fetchingDataController.add(AuthModelBloc(isLoading: false));
@@ -74,7 +79,7 @@ class AuthBloc extends ChangeNotifier implements IAuthBloc {
   @override
   void navigateToPop() {
     _fetchingDataController.add(AuthModelBloc(isLoading: false));
-    Modular.to.pop();
+    _navigatorApp.pop();
   }
 
   @override

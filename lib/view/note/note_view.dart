@@ -1,15 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:secure_note/components/appButton.dart';
+import 'package:secure_note/components/form.dart';
 import 'package:secure_note/helpers/bottom_sheet_helper.dart';
 import 'package:secure_note/repositories/local_data_source/Model/note_model.dart';
 import 'package:secure_note/view/note/note_bloc.dart';
-import 'package:secure_note/widget/success.dart';
-
-import '../../widget/appButton.dart';
-import '../../widget/form.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:secure_note/components/success.dart';
 
 class NoteView extends StatefulWidget {
   final INoteBloc bloc;
@@ -62,6 +59,16 @@ class _NoteViewState extends State<NoteView> {
                     }
                     if (snapshot.data!.success) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Successs().appShowDialog(
+                          title: "Salvo com sucesso",
+                          subtitle: snapshot.error.toString(),
+                          isDismissible: true,
+                          enableDrag: false,
+                          context: context,
+                          button: () {
+                            widget.bloc.navigatoPop();
+                          },
+                        );
                         Successs().appShowDialog(
                           title: "Salvo com sucesso",
                           subtitle: snapshot.error.toString(),

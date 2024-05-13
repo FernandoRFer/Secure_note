@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:secure_note/helpers/bottom_sheet_helper.dart';
 
 import 'package:secure_note/view/auth/auth_bloc.dart';
-import 'package:secure_note/widget/appButton.dart';
+import 'package:secure_note/components/appButton.dart';
 
 class AuthView extends StatefulWidget {
   final IAuthBloc bloc;
@@ -40,12 +40,18 @@ class _AuthViewState extends State<AuthView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    widget.bloc.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    ValueNotifier<bool> isAuth = ValueNotifier(false);
     return Scaffold(
         appBar: AppBar(
           title: const Text(""),
           centerTitle: true,
+          automaticallyImplyLeading: false,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

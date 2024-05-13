@@ -14,7 +14,6 @@ abstract class IGlobalError {
 
 class GlobalError implements IGlobalError {
   // final IAppLog _appLog;
-
   // GlobalError(this._appLog);
 
   @override
@@ -40,7 +39,7 @@ class GlobalError implements IGlobalError {
         error as PlatformException;
         return GlobalErrorModel(
           GlobalErrorTypes.hardware,
-          platformExceptionReplace(error.toString()),
+          error.toString(),
         );
       case TimeoutException:
         error as TimeoutException;
@@ -51,18 +50,8 @@ class GlobalError implements IGlobalError {
       default:
         return GlobalErrorModel(
           GlobalErrorTypes.exception,
-          error.toString().replaceAll("Exception:", ""),
+          error.toString(),
         );
-    }
-  }
-
-  String platformExceptionReplace(String error) {
-    if (error.contains("Impressora sem papel")) {
-      return "Impressora sem papel";
-    } else if (error.contains("GediException(POWER_NO_BATTERY)")) {
-      return "Bateria fraca";
-    } else {
-      return "Erro desconhecido";
     }
   }
 }
