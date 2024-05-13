@@ -6,7 +6,11 @@ class SplashModule {
   static GetIt getIt = GetIt.instance;
   void configure() {
     getIt
-      ..registerLazySingleton<ISplashBloc>(() => SplashBloc(getIt(), getIt()))
+      ..registerLazySingleton<ISplashBloc>(() => SplashBloc(
+            getIt(),
+            getIt(),
+            getIt(),
+          ))
       ..registerSingleton(() => SplashView(getIt()));
   }
 }

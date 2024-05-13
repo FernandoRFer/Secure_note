@@ -1,11 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:secure_note/code/navigator_app.dart';
 import 'package:secure_note/core/router/routes.dart';
+import 'package:secure_note/helpers/global_error.dart';
 import 'package:secure_note/repositories/local_data_source/Model/user_model.dart';
 
 class RegisterModelBloc {
@@ -28,9 +26,11 @@ abstract class IRegisterlBloc {
 
 class RegisterlBloc extends ChangeNotifier implements IRegisterlBloc {
   final INavigatorApp _navigatorApp;
+  final IGlobalError _globalError;
 
   RegisterlBloc(
     this._navigatorApp,
+    this._globalError,
   );
 
   final _fetchingDataController = BehaviorSubject<RegisterModelBloc>();
@@ -44,9 +44,9 @@ class RegisterlBloc extends ChangeNotifier implements IRegisterlBloc {
 
       return true;
     } catch (e) {
-      _fetchingDataController.addError(
-        "Um erro  ocorreu ao conectar, tente novamente - $e",
-      );
+      final globalError = await _globalError.errorHandling(
+          "Erro ao salvar registros", e, StackTrace.current);
+      _fetchingDataController.addError(globalError);
     }
     return false;
   }
@@ -68,7 +68,6 @@ class RegisterlBloc extends ChangeNotifier implements IRegisterlBloc {
 
   @override
   void dispose() {
-    log("dispose stream");
     _fetchingDataController.close();
     super.dispose();
   }

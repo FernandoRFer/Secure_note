@@ -6,7 +6,10 @@ class AuthModule {
   static GetIt getIt = GetIt.instance;
   void configure() {
     getIt
-      ..registerFactory<IAuthBloc>(() => AuthBloc(getIt()))
+      ..registerFactory<IAuthBloc>(() => AuthBloc(
+            getIt(),
+            getIt(),
+          ))
       ..registerFactory(() => AuthView(getIt()));
   }
 }

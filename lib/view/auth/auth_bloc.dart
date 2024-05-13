@@ -5,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'package:secure_note/code/navigator_app.dart';
 import 'package:secure_note/core/router/routes.dart';
+import 'package:secure_note/helpers/global_error.dart';
 
 class AuthModelBloc {
   bool isLoading;
@@ -24,8 +25,10 @@ abstract class IAuthBloc {
 class AuthBloc extends ChangeNotifier implements IAuthBloc {
   final _fetchingDataController = BehaviorSubject<AuthModelBloc>();
   final INavigatorApp _navigatorApp;
+  final IGlobalError _globalError;
   AuthBloc(
     this._navigatorApp,
+    this._globalError,
   );
 
   @override
@@ -73,7 +76,9 @@ class AuthBloc extends ChangeNotifier implements IAuthBloc {
     //   );
     // }
     catch (e) {
-      _fetchingDataController.addError(e.toString());
+      final globalError = await _globalError.errorHandling(
+          "Erro ao carregar metodo de autendicação", e, StackTrace.current);
+      _fetchingDataController.addError(globalError);
     }
   }
 
