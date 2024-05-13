@@ -37,9 +37,12 @@ class SplashBloc extends ChangeNotifier implements ISplashBloc {
   @override
   Future<void> load() async {
     try {
-      await _userTheme.setColor();
-      // carregamento de funções
-      // await Future.delayed(const Duration(seconds: 1));
+      _fetchingDataController.add(SplashModel(iconData: true));
+
+      await Future.wait([
+        _userTheme.setColor(),
+        Future.delayed(const Duration(seconds: 2)),
+      ]);
       // _fetchingDataController.add(SplashModel(iconData: false));
       // await Future.delayed(const Duration(seconds: 1));
 
