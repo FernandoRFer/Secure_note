@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/navigator_app.dart';
 import 'package:secure_note/core/theme/preferencies_user.dart';
 import 'package:secure_note/helpers/helpers_module.dart';
 import 'package:secure_note/repositories/repositories_module.dart';

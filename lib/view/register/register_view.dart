@@ -43,14 +43,12 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     log("Log registro");
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     log("Dispose view");
   }

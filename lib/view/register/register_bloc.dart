@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/navigator_app.dart';
 import 'package:secure_note/core/router/routes.dart';
 import 'package:secure_note/repositories/local_data_source/Model/user_model.dart';
 
@@ -26,7 +26,7 @@ abstract class IRegisterlBloc {
   void dispose();
 }
 
-class RegisterlBloc extends ChangeNotifier implements IRegisterlBloc {
+class RegisterlBloc implements IRegisterlBloc {
   final INavigatorApp _navigatorApp;
 
   RegisterlBloc(
@@ -67,9 +67,8 @@ class RegisterlBloc extends ChangeNotifier implements IRegisterlBloc {
       _fetchingDataController.stream;
 
   @override
-  void dispose() {
+  Future<void> dispose() async {
     log("dispose stream");
-    _fetchingDataController.close();
-    super.dispose();
+    await _fetchingDataController.close();
   }
 }

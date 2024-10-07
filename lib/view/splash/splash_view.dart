@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
 import 'package:secure_note/view/splash/splash_bloc.dart';
 
 class SplashView extends StatefulWidget {
@@ -15,16 +14,11 @@ class SplashView extends StatefulWidget {
   State<SplashView> createState() => _SplashViewState();
 }
 
-class _SplashViewState extends State<SplashView>
-    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
-  ValueNotifier<bool> isAuth = ValueNotifier(false);
-  late AnimationController _animation;
-
+class _SplashViewState extends State<SplashView> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    _animation = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1000));
+
     SchedulerBinding.instance.addPostFrameCallback((_) {
       widget.bloc.load();
     });
@@ -33,8 +27,6 @@ class _SplashViewState extends State<SplashView>
 
   @override
   void dispose() {
-    _animation.dispose();
-
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }

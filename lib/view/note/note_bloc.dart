@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/navigator_app.dart';
 import 'package:secure_note/repositories/local_data_source/Model/note_model.dart';
 import 'package:secure_note/repositories/local_data_source/bd/db_note.dart';
 import 'package:secure_note/core/router/routes.dart';
@@ -24,7 +24,7 @@ abstract class INoteBloc {
   void dispose();
 }
 
-class NoteBloc extends ChangeNotifier implements INoteBloc {
+class NoteBloc implements INoteBloc {
   final IDbNotes _dbNotes;
   final INavigatorApp _navigatorApp;
 
@@ -38,7 +38,6 @@ class NoteBloc extends ChangeNotifier implements INoteBloc {
   @override
   void dispose() {
     _fetchingDataController.close();
-    super.dispose();
   }
 
   @override

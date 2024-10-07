@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/navigator_app.dart';
 import 'package:secure_note/core/theme/preferencies_user.dart';
 import 'package:secure_note/helpers/global_error.dart';
 import 'package:secure_note/repositories/local_data_source/Model/note_model.dart';
@@ -24,7 +24,7 @@ abstract class IHomeBloc {
   Future<void> removeNote(int id);
 }
 
-class HomeBloc extends ChangeNotifier implements IHomeBloc {
+class HomeBloc implements IHomeBloc {
   final IDbNotes _dbNotes;
   final IGlobalError _globalError;
   final INavigatorApp _navigatorApp;
@@ -39,7 +39,6 @@ class HomeBloc extends ChangeNotifier implements IHomeBloc {
 
   @override
   void dispose() {
-    super.dispose();
     _fetchingDataController.close();
   }
 

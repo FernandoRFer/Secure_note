@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/navigator_app.dart';
 import 'package:secure_note/core/router/routes.dart';
 import 'package:secure_note/core/theme/preferencies_user.dart';
 
@@ -24,7 +24,7 @@ abstract class ISplashBloc {
   void dispose();
 }
 
-class SplashBloc extends ChangeNotifier implements ISplashBloc {
+class SplashBloc implements ISplashBloc {
   final _fetchingDataController = BehaviorSubject<SplashModel>();
 
   final INavigatorApp _navigatorApp;
@@ -43,15 +43,16 @@ class SplashBloc extends ChangeNotifier implements ISplashBloc {
         _userTheme.setColor(),
         Future.delayed(const Duration(seconds: 2)),
       ]);
+
       // _fetchingDataController.add(SplashModel(iconData: false));
       // await Future.delayed(const Duration(seconds: 1));
 
       _fetchingDataController.add(SplashModel(iconData: false));
       navigatoHome();
     } catch (e) {
-      // _fetchingDataController.addError(
-      //   "Um erro  ocorreu ao conectar, tente novamente - $e",
-      // );
+      _fetchingDataController.addError(
+        "Um erro  ocorreu ao conectar, tente novamente - $e",
+      );
     }
   }
 
@@ -66,5 +67,10 @@ class SplashBloc extends ChangeNotifier implements ISplashBloc {
   @override
   void setTheme() async {
     _userTheme.setColor();
+  }
+
+  @override
+  Future<void> dispose() async {
+    _fetchingDataController.close();
   }
 }

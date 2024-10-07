@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:secure_note/helpers/bottom_sheet_helper.dart';
-import 'package:secure_note/main.dart';
 import 'package:secure_note/view/home/home_bloc.dart';
 import 'package:secure_note/components/appButton.dart';
 

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:secure_note/view/success/success_view.dart';
 
 class BottomSheetHelper {
   Future<bool?> bottomSheetError({

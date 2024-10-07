@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'package:secure_note/code/navigator_app.dart';
+import 'package:secure_note/core/navigator_app.dart';
 import 'package:secure_note/core/router/routes.dart';
 
 class AuthModelBloc {
@@ -21,7 +21,7 @@ abstract class IAuthBloc {
   void dispose();
 }
 
-class AuthBloc extends ChangeNotifier implements IAuthBloc {
+class AuthBloc implements IAuthBloc {
   final _fetchingDataController = BehaviorSubject<AuthModelBloc>();
   final INavigatorApp _navigatorApp;
   AuthBloc(
@@ -30,7 +30,6 @@ class AuthBloc extends ChangeNotifier implements IAuthBloc {
 
   @override
   void dispose() {
-    super.dispose();
     _fetchingDataController.close();
   }
 
@@ -50,29 +49,16 @@ class AuthBloc extends ChangeNotifier implements IAuthBloc {
       authenticated = await auth.authenticate(
         localizedReason:
             'Deixe o sistema operacional determinar o método de autenticação',
-        // authMessages: ,
-        // authMessages: ,
         options: const AuthenticationOptions(
           stickyAuth: true,
         ),
       );
 
       if (authenticated) {
-        // await Future.delayed(const Duration(seconds: 2));
-
         _navigatorApp.pushNamed(AppRoutes.home);
         _fetchingDataController.add(AuthModelBloc(isLoading: false));
-      } else {
-        _fetchingDataController.add(AuthModelBloc(isLoading: false));
-        // loadAuthenticate();
-      }
-    }
-    // on Exception catch (e) {
-    //   _fetchingDataController.addError(
-    //     "É necessário que o dispositivo possua uma autenticação, por favor verifique a compatibilidade do aplicativo com seu dispositivo. $e",
-    //   );
-    // }
-    catch (e) {
+      } else {}
+    } catch (e) {
       _fetchingDataController.addError(e.toString());
     }
   }

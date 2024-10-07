@@ -2,7 +2,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:material_color_utilities/palettes/core_palette.dart';
 
-mixin IUserTheme implements ValueNotifier<UserThemeModel> {
+abstract class IUserTheme implements ValueNotifier<UserThemeModel> {
   void setTheme();
   Future<ColorScheme?> setColor();
 }
